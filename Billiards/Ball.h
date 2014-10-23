@@ -1,5 +1,4 @@
-#ifndef BALL_H
-#define BALL_H
+#pragma once
 
 #include"Vector2d.h"
 
@@ -15,5 +14,3 @@ public:
 	float getY();
 	void move();
 };
-
-#endif

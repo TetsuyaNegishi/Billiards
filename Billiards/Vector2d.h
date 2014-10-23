@@ -1,5 +1,4 @@
-#ifndef VECTOR2D_H
-#define VECTOR2D_H
+#pragma once
 
 class Vector2d{
 public:
@@ -26,5 +25,3 @@ float operator*(const Vector2d& u, const Vector2d& v);
 Vector2d operator*(const Vector2d& v, float k);
 Vector2d operator*(float k, const Vector2d& v);
 Vector2d operator/(const Vector2d& v, float k);
-
-#endif
