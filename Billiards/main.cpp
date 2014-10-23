@@ -5,8 +5,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int){
 	Game game;
 
 	game.init(); 
-	game.main();
-	game.end();
+	//game.main();
+	//game.end();
 
 	return 0;
 }
