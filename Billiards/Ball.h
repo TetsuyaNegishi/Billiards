@@ -3,7 +3,7 @@
 #include"Vector2d.h"
 
 class Ball{
-protected:
+private:
 	Vector2d t; //座標
 	Vector2d v; //速度
 	int color;

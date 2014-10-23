@@ -16,7 +16,7 @@ Ball::Ball(float x, float y, int color){
 
 
 void Ball::setX(float x){
-	v.x = x;
+	t.x = x;
 }
 
 float Ball::getX(){
@@ -24,7 +24,7 @@ float Ball::getX(){
 }
 
 void Ball::setY(float y){
-	v.y = y;
+	t.y = y;
 }
 
 float Ball::getY(){
