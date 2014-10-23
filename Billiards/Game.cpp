@@ -30,7 +30,11 @@ void Game::boardShow(){
 	DrawBox(FIELD_LEFT, FIELD_TOP, FIELD_RIGHT, CUSHION_TOP, GREEN, TRUE);			//上クッション
 	DrawBox(FIELD_LEFT, FIELD_BOTTOM, FIELD_RIGHT, CUSHION_BOTTOM, GREEN, TRUE);	//下クッション
 	//ポケット描画
-
+	Pocket pocket;
+	for (int i = 0; i < pockets.size(); i++){
+		pocket = pockets[i];
+		DrawCircle(pocket.getX(), pocket.getY(), pocket.getSize(), BLACK);
+	}
 
 }
 
