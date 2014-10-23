@@ -14,6 +14,8 @@ void Game::init(){
 	pockets.push_back(Pocket(FIELD_RIGHT - a, FIELD_BOTTOM - a));
 	pockets.push_back(Pocket(WINDOW_WIDTH/2, FIELD_TOP + a));
 	pockets.push_back(Pocket(WINDOW_WIDTH/2, FIELD_BOTTOM - a));
+
+	player = Player(100, 100, GetColor(255, 255, 255));
 }
 
 void Game::boardShow(){
@@ -36,13 +38,17 @@ void Game::boardShow(){
 		pocket = pockets[i];
 		DrawCircle((int)pocket.getX(), (int)pocket.getY(), pocket.getSize(), BLACK);
 	}
+}
 
+void Game::ballShow(){
+	DrawCircle(player.getX(), player.getY(), player.getSize(), player.getColor());
 }
 
 void Game::main(){
 	// while(裏画面を表画面に反映, メッセージ処理, 画面クリア)
 	while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0){
 		boardShow();
+		ballShow();
 	}
 }
 

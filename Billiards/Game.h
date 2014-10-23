@@ -3,12 +3,14 @@
 #include<DxLib.h>
 #include<vector>
 #include"Pocket.h"
+#include"Player.h"
 
 class Game{
 private:
+	Player player;
 	std::vector<Pocket> pockets;
 	void boardShow();
-
+	void ballShow();
 
 public:
 	static const int WINDOW_WIDTH = 800;	//ウィンドウ幅
