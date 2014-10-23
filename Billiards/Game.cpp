@@ -7,12 +7,13 @@ void Game::init(){
 	SetBackgroundColor(255, 255, 255), SetGraphMode(WINDOW_WIDTH, WINDOW_HEIGHT, 16); //背景色設定とウィンドウサイズ設定
 	ChangeWindowMode(TRUE), DxLib_Init(), SetDrawScreen(DX_SCREEN_BACK); //ウィンドウモード変更と初期化と裏画面設定
 
-	pockets.push_back(Pocket(FIELD_LEFT, FIELD_TOP));
-	pockets.push_back(Pocket(FIELD_RIGHT, FIELD_TOP));
-	pockets.push_back(Pocket(FIELD_LEFT, FIELD_BOTTOM));
-	pockets.push_back(Pocket(FIELD_RIGHT, FIELD_BOTTOM));
-	pockets.push_back(Pocket(WINDOW_WIDTH/2, FIELD_TOP));
-	pockets.push_back(Pocket(WINDOW_WIDTH/2, FIELD_BOTTOM));
+	const int a = 10;
+	pockets.push_back(Pocket(FIELD_LEFT + a, FIELD_TOP + a));
+	pockets.push_back(Pocket(FIELD_RIGHT - a, FIELD_TOP + a));
+	pockets.push_back(Pocket(FIELD_LEFT + a, FIELD_BOTTOM - a));
+	pockets.push_back(Pocket(FIELD_RIGHT - a, FIELD_BOTTOM - a));
+	pockets.push_back(Pocket(WINDOW_WIDTH/2, FIELD_TOP + a));
+	pockets.push_back(Pocket(WINDOW_WIDTH/2, FIELD_BOTTOM - a));
 }
 
 void Game::boardShow(){
@@ -31,9 +32,9 @@ void Game::boardShow(){
 	DrawBox(FIELD_LEFT, FIELD_BOTTOM, FIELD_RIGHT, CUSHION_BOTTOM, GREEN, TRUE);	//下クッション
 	//ポケット描画
 	Pocket pocket;
-	for (int i = 0; i < pockets.size(); i++){
+	for (unsigned int i = 0; i < pockets.size(); i++){
 		pocket = pockets[i];
-		DrawCircle(pocket.getX(), pocket.getY(), pocket.getSize(), BLACK);
+		DrawCircle((int)pocket.getX(), (int)pocket.getY(), pocket.getSize(), BLACK);
 	}
 
 }
