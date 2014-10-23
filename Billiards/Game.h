@@ -13,6 +13,7 @@ private:
 	void ballShow();
 	void update();
 
+
 public:
 	static const int WINDOW_WIDTH = 800;	//ウィンドウ幅
 	static const int WINDOW_HEIGHT = 450;	//ウィンドウ高さ

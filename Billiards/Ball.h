@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include"Vector2d.h"
-#include"Game.h"
 
 class Ball{
 protected:
