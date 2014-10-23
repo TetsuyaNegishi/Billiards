@@ -9,8 +9,9 @@ Ball::Ball(float x, float y){
 	t = Vector2d(x, y);
 }
 
-Ball::Ball(float x, float y, int color) : color(color){
+Ball::Ball(float x, float y, int color){
 	Ball(x, y);
+	this->color = color;
 }
 
 

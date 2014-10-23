@@ -15,7 +15,7 @@ void Game::init(){
 	pockets.push_back(Pocket(WINDOW_WIDTH/2, FIELD_TOP + a));
 	pockets.push_back(Pocket(WINDOW_WIDTH/2, FIELD_BOTTOM - a));
 
-	player = Player(100, 100, GetColor(255, 255, 255));
+	player = Player(200, 200, GetColor(255, 255, 255));
 }
 
 void Game::boardShow(){
@@ -23,7 +23,7 @@ void Game::boardShow(){
 	const int DARK_GREEN = GetColor(0, 100, 0);
 	const int GREEN = GetColor(0, 200, 0);
 	const int BLACK = GetColor(0, 0, 0);
-	
+
 	//ÉrÉäÉÑÅ[Éhî’ï`âÊ
 	DrawBox(BOARD_LEFT, BOARD_TOP, BOARD_RIGHT, BOARD_BOTTOM, BROWN, TRUE);
 	DrawBox(FIELD_LEFT, FIELD_TOP, FIELD_RIGHT, FIELD_BOTTOM, DARK_GREEN, TRUE);
@@ -41,7 +41,7 @@ void Game::boardShow(){
 }
 
 void Game::ballShow(){
-	DrawCircle(player.getX(), player.getY(), player.getSize(), player.getColor());
+	DrawCircle((int)player.getX(), (int)player.getY(), player.getSize(), player.getColor());
 }
 
 void Game::main(){

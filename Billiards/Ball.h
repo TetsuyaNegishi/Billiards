@@ -1,19 +1,19 @@
-#pragma once
+ï»¿#pragma once
 
 #include"Vector2d.h"
 
 class Ball{
-private:
-	Vector2d t; //À•W
-	Vector2d v; //‘¬“x
-	const int color;
+protected:
+	Vector2d t; //Âåº§æ¨™
+	Vector2d v; //é€Ÿåº¦
+	int color;
 	static const int SIZE = 10;
 
 public:
 	Ball();
 	Ball(float x, float y);
 	Ball(float x, float y, int color);
-	
+
 	void setX(float x);
 	float getX();
 	void setY(float y);
