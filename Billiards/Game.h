@@ -11,6 +11,7 @@ private:
 	std::vector<Pocket> pockets;
 	void boardShow();
 	void ballShow();
+	void update();
 
 public:
 	static const int WINDOW_WIDTH = 800;	//ウィンドウ幅

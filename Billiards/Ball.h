@@ -1,9 +1,10 @@
 ﻿#pragma once
 
 #include"Vector2d.h"
+#include"Game.h"
 
 class Ball{
-private:
+protected:
 	Vector2d t; //座標
 	Vector2d v; //速度
 	int color;
@@ -18,6 +19,7 @@ public:
 	float getX();
 	void setY(float y);
 	float getY();
+	void setV(Vector2d vi);
 	int getColor();
 	int getSize();
 

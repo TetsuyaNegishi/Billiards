@@ -41,18 +41,20 @@ void Game::boardShow(){
 }
 
 void Game::ballShow(){
-	DrawCircle((int)player.getX(), (int)player.getY(), player.getSize(), GetColor(255, 0, 0));
+	DrawCircle((int)player.getX(), (int)player.getY(), player.getSize(), player.getColor());
+}
+
+void Game::update(){
+	player.move();
 }
 
 void Game::main(){
-	Player p(300, 300, GetColor(255, 0, 0));
-	p.setX(400);
+	player.setV(Vector2d(2, 2));
 	// while(裏画面を表画面に反映, メッセージ処理, 画面クリア)
 	while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0){
 		boardShow();
-		DrawCircle(p.getX(), p.getY(), 20, GetColor(0, 255, 0));
-
 		ballShow();
+		update();
 	}
 }
 
