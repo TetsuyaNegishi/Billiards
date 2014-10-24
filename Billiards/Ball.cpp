@@ -33,6 +33,10 @@ float Ball::getY(){
 	return t.y;
 }
 
+Vector2d Ball::getT(){
+	return t;
+}
+
 void Ball::setV(Vector2d vi){
 	v = vi;
 }

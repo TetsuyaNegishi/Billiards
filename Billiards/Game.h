@@ -12,7 +12,7 @@ private:
 	void boardShow();
 	void ballShow();
 	void update();
-
+	void clickCheck();
 
 public:
 	static const int WINDOW_WIDTH = 800;	//ウィンドウ幅

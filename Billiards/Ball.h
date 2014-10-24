@@ -18,6 +18,7 @@ public:
 	float getX();
 	void setY(float y);
 	float getY();
+	Vector2d getT();
 	void setV(Vector2d vi);
 	int getColor();
 	int getSize();
