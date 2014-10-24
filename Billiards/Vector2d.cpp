@@ -1,4 +1,5 @@
 #include "Vector2D.h"
+#include <math.h>
 
 Vector2d::Vector2d() :x(0), y(0)
 {
@@ -38,6 +39,16 @@ Vector2d Vector2d::operator-(){
 	return Vector2d(-x, -y);
 }
 
+//ƒmƒ‹ƒ€
+float Vector2d::norm(){
+	return sqrt(x*x + y*y);
+}
+
+//³‹K‰»
+void Vector2d::normalize(){
+	this->x = x / norm();
+	this->y = y / norm();
+}
 
 //“ñ€‰‰Zq
 Vector2d operator+(const Vector2d& u, const Vector2d& v){	//vector+vector

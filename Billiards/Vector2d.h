@@ -11,6 +11,8 @@ public:
 	Vector2d& operator/=(float k);
 	Vector2d operator+();
 	Vector2d operator-();
+	float norm();
+	void normalize();
 
 	float x;
 	float y;
