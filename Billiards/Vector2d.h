@@ -13,6 +13,7 @@ public:
 	Vector2d operator-();
 	float norm();
 	void normalize();
+	Vector2d getNormalizeVector();
 
 	float x;
 	float y;

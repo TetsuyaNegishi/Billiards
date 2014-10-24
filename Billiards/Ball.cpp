@@ -1,6 +1,9 @@
 #include"Ball.h"
 #include"Game.h"
 
+const int Ball::SIZE = 10;
+const float Ball::FRICTON_FORCE_SIZE = 0.01;
+
 Ball::Ball(){
 	v = Vector2d(0, 0);
 }
@@ -33,6 +36,10 @@ float Ball::getY(){
 	return t.y;
 }
 
+void Ball::setT(Vector2d t){
+	this->t = t;
+}
+
 Vector2d Ball::getT(){
 	return t;
 }
@@ -56,4 +63,8 @@ void Ball::move(){
 	if (Game::CUSHION_TOP > (check.y - SIZE) || Game::CUSHION_BOTTOM < (check.y + SIZE))
 		v.y *= -1;
 	t += v;
+
+	Vector2d frictionForce;
+	frictionForce = FRICTON_FORCE_SIZE*v.getNormalizeVector();
+	v -= frictionForce;
 }

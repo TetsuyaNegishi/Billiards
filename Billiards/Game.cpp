@@ -49,7 +49,7 @@ void Game::update(){
 }
 
 void Game::clickCheck(){
-	int x, y;
+	int x, y, vs;
 	Vector2d direction;
 	if (GetMouseInput() & MOUSE_INPUT_LEFT){
 		GetMousePoint(&x, &y);

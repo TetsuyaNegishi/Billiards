@@ -7,7 +7,8 @@ protected:
 	Vector2d t; //座標
 	Vector2d v; //速度
 	int color;
-	static const int SIZE = 10;
+	static const int SIZE;
+	static const float FRICTON_FORCE_SIZE;
 
 public:
 	Ball();
@@ -18,6 +19,7 @@ public:
 	float getX();
 	void setY(float y);
 	float getY();
+	void setT(Vector2d);
 	Vector2d getT();
 	void setV(Vector2d vi);
 	int getColor();

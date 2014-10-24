@@ -50,6 +50,10 @@ void Vector2d::normalize(){
 	this->y = y / norm();
 }
 
+Vector2d Vector2d::getNormalizeVector(){
+	return Vector2d(x / norm(), y / norm());
+}
+
 //“ñ€‰‰Zq
 Vector2d operator+(const Vector2d& u, const Vector2d& v){	//vector+vector
 	Vector2d w;
