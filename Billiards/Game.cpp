@@ -55,7 +55,7 @@ void Game::clickCheck(){
 		GetMousePoint(&x, &y);
 		direction = Vector2d(x, y) - player.getT();
 		direction.normalize();
-		player.setV(2*direction);
+		player.setV(5*direction);
 	}
 }
 
