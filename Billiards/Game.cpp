@@ -41,7 +41,7 @@ void Game::boardShow(){
 }
 
 void Game::ballShow(){
-	DrawCircle((int)player.getX(), (int)player.getY(), player.getSize(), player.getColor());
+	DrawCircle(player.getXi(), player.getYi(), player.getSize(), player.getColor());
 }
 
 void Game::update(){

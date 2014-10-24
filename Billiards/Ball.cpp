@@ -1,5 +1,6 @@
 #include"Ball.h"
 #include"Game.h"
+#include<math.h>
 
 const int Ball::SIZE = 10;
 const float Ball::FRICTON_FORCE_SIZE = 0.01;
@@ -28,12 +29,20 @@ float Ball::getX(){
 	return t.x;
 }
 
+int Ball::getXi(){
+	return round(t.x);
+}
+
 void Ball::setY(float y){
 	t.y = y;
 }
 
 float Ball::getY(){
 	return t.y;
+}
+
+int Ball::getYi(){
+	return round(t.y);
 }
 
 void Ball::setT(Vector2d t){

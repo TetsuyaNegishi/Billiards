@@ -17,8 +17,10 @@ public:
 
 	void setX(float x);
 	float getX();
+	int getXi();
 	void setY(float y);
 	float getY();
+	int getYi();
 	void setT(Vector2d);
 	Vector2d getT();
 	void setV(Vector2d vi);
