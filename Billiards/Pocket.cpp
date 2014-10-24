@@ -1,5 +1,7 @@
 #include"Pocket.h"
 
+const int Pocket::SIZE = 25;
+
 Pocket::Pocket(){
 	t = Vector2d(0, 0);
 }

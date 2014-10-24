@@ -5,7 +5,7 @@
 class Pocket{
 private:
 	Vector2d t;
-	static const int SIZE = 20;
+	static const int SIZE;
 public:
 	Pocket();
 	Pocket(int x, int y);
