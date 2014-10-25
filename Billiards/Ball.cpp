@@ -30,7 +30,7 @@ float Ball::getX(){
 }
 
 int Ball::getXi(){
-	return round(t.x);
+	return (int)round(t.x);
 }
 
 void Ball::setY(float y){
@@ -42,7 +42,7 @@ float Ball::getY(){
 }
 
 int Ball::getYi(){
-	return round(t.y);
+	return (int)round(t.y);
 }
 
 void Ball::setT(Vector2d t){
@@ -80,5 +80,8 @@ void Ball::move(){
 		v.y *= -1;
 	t += v;
 
-	v = FRICTON_FORCE_SIZE*v;
+	if ((FRICTON_FORCE_SIZE*v).norm() < pow(10, -2))
+		v = Vector2d(0, 0);
+	else
+		v = FRICTON_FORCE_SIZE*v;
 }

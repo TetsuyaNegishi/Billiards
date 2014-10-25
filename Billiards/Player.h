@@ -7,5 +7,4 @@ public:
 	Player();
 	Player(float x, float y);
 	Player(float x, float y, int color);
-	void move();
 };

@@ -1,5 +1,6 @@
 #include"Game.h"
 #include<DxLib.h>
+#include<vector>
 
 Game::Game(){}
 
@@ -45,15 +46,18 @@ void Game::ballShow(){
 }
 
 void Game::update(){
-	//
-	for (unsigned int i = 0; i < moveBalls.size(); i++)
-		moveBalls[i]->move();
+	std::vector<Ball*> moveBallsClone = moveBalls;
+	for (std::vector<Ball*>::iterator moveBall = moveBallsClone.begin(); moveBall != moveBallsClone.end(); moveBall++){
+		(*moveBall)->move();
+		if ((*moveBall)->movingCheck() == false)
+			moveBalls.erase(moveBall);
+	}
 }
 
 void Game::clickCheck(){
 	int x, y;
 	Vector2d direction;
-	if (GetMouseInput() & MOUSE_INPUT_LEFT){
+	if ((GetMouseInput() & MOUSE_INPUT_LEFT) && moveBalls.size() == 0){
 		GetMousePoint(&x, &y);
 		direction = Vector2d(x, y) - player.getT();
 		direction.normalize();
