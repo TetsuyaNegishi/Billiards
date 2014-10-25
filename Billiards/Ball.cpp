@@ -65,11 +65,18 @@ int Ball::getSize(){
 	return SIZE;
 }
 
+bool Ball::movingCheck(){
+	if (v.norm() == 0.0)
+		return false;
+	else
+		return true;
+}
+
 void Ball::move(){
 	Vector2d check = t + v;
 	if (Game::CUSHION_LEFT > (check.x - SIZE) || Game::CUSHION_RIGHT < (check.x + SIZE))
 		v.x *= -1;
-	if (Game::CUSHION_TOP > (check.y - SIZE) || Game::CUSHION_BOTTOM < (check.y + SIZE))
+	if (Game::CUSHION_TOP >(check.y - SIZE) || Game::CUSHION_BOTTOM < (check.y + SIZE))
 		v.y *= -1;
 	t += v;
 

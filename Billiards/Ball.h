@@ -27,5 +27,6 @@ public:
 	int getColor();
 	int getSize();
 
+	bool movingCheck();
 	void move();
 };

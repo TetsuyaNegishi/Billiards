@@ -45,11 +45,13 @@ void Game::ballShow(){
 }
 
 void Game::update(){
-	player.move();
+	//
+	for (unsigned int i = 0; i < moveBalls.size(); i++)
+		moveBalls[i]->move();
 }
 
 void Game::clickCheck(){
-	int x, y, vs;
+	int x, y;
 	Vector2d direction;
 	if (GetMouseInput() & MOUSE_INPUT_LEFT){
 		GetMousePoint(&x, &y);
@@ -61,6 +63,7 @@ void Game::clickCheck(){
 
 void Game::main(){
 	player.setV(Vector2d(2, 2));
+	moveBalls.push_back(&player);
 	// while(裏画面を表画面に反映, メッセージ処理, 画面クリア)
 	while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0){
 		boardShow();
