@@ -3,7 +3,7 @@
 #include<math.h>
 
 const int Ball::SIZE = 10;
-const float Ball::FRICTON_FORCE_SIZE = 0.01;
+const float Ball::FRICTON_FORCE_SIZE = 0.99;
 
 Ball::Ball(){
 	v = Vector2d(0, 0);
@@ -73,7 +73,5 @@ void Ball::move(){
 		v.y *= -1;
 	t += v;
 
-	Vector2d frictionForce;
-	frictionForce = FRICTON_FORCE_SIZE*v.getNormalizeVector();
-	v -= frictionForce;
+	v = FRICTON_FORCE_SIZE*v;
 }
