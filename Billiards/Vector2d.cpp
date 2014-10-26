@@ -46,12 +46,12 @@ float Vector2d::norm(){
 
 //³‹K‰»
 void Vector2d::normalize(){
-	this->x = x / norm();
-	this->y = y / norm();
+	*this = *this / norm();
 }
 
 Vector2d Vector2d::getNormalizeVector(){
-	return Vector2d(x / norm(), y / norm());
+	return *this / norm();
+	//return Vector2d(x / norm(), y / norm());
 }
 
 //“ñ€‰‰Zq
