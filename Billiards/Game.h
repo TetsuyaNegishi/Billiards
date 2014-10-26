@@ -10,7 +10,7 @@ private:
 	Player player;
 	std::vector<Pocket> pockets;
 	std::vector<Ball> balls;
-	std::vector<Ball*> moveBalls;
+	std::vector<Ball*> movingBalls;
 	void boardShow();
 	void ballShow();
 	void update();

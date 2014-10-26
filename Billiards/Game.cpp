@@ -46,34 +46,35 @@ void Game::ballShow(){
 }
 
 void Game::update(){
-	std::vector<Ball*> moveBallsClone = moveBalls;
-	for (std::vector<Ball*>::iterator moveBall = moveBallsClone.begin(); moveBall != moveBallsClone.end(); moveBall++){
-		(*moveBall)->move();
-		if ((*moveBall)->movingCheck() == false)
-			moveBalls.erase(moveBall);
+	for (std::vector<Ball*>::iterator movingBall = movingBalls.begin(); movingBall != movingBalls.end();){
+		(*movingBall)->move();
+		if ((*movingBall)->movingCheck() == false)
+			movingBall = movingBalls.erase(movingBall);
+		else
+			movingBall++;
 	}
 }
 
 void Game::clickCheck(){
 	int x, y;
 	Vector2d direction;
-	if ((GetMouseInput() & MOUSE_INPUT_LEFT) && moveBalls.size() == 0){
+	if (GetMouseInput() & MOUSE_INPUT_LEFT){
 		GetMousePoint(&x, &y);
 		direction = Vector2d(x, y) - player.getT();
 		direction.normalize();
-		player.setV(5*direction);
+		player.setV(5 * direction);
+		movingBalls.push_back(&player);
 	}
 }
 
 void Game::main(){
-	player.setV(Vector2d(2, 2));
-	moveBalls.push_back(&player);
-	// while(裏画面を表画面に反映, メッセージ処理, 画面クリア)
 	while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0){
 		boardShow();
 		ballShow();
-		clickCheck();
-		update();
+		if (movingBalls.size() == 0)
+			clickCheck();
+		else
+			update();
 	}
 }
 
