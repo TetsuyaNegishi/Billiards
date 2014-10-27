@@ -26,6 +26,7 @@ public:
 	Vector2d getT();
 	void setV(Vector2d vi);
 	Vector2d getV();
+	void setColor(int color);
 	int getColor();
 	int getSize();
 

@@ -19,8 +19,8 @@ void Game::init(){
 	player = Player(200, 200, GetColor(255, 255, 255));
 	balls.push_back(&player);
 	
-	Ball ball = Ball(600, 200, GetColor(255, 0, 0));
-	balls.push_back(&ball);
+	auto ball = new Ball(600, 200, GetColor(255, 255, 255));
+	balls.push_back(ball);
 }
 
 void Game::boardShow(){
@@ -53,10 +53,12 @@ void Game::ballShow(){
 void Game::update(){
 	for (std::vector<Ball*>::iterator movingBall = movingBalls.begin(); movingBall != movingBalls.end();){
 		(*movingBall)->move();
+		(*movingBall)->collision(balls);
 		if ((*movingBall)->movingCheck() == false)
 			movingBall = movingBalls.erase(movingBall);
 		else
 			movingBall++;
+
 	}
 }
 

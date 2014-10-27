@@ -61,6 +61,10 @@ Vector2d Ball::getV(){
 	return v;
 }
 
+void Ball::setColor(int color){
+	this->color = color;
+}
+
 int Ball::getColor(){
 	return color;
 }
