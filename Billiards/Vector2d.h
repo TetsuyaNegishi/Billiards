@@ -12,6 +12,7 @@ public:
 	Vector2d operator+();
 	Vector2d operator-();
 	float norm();
+	float norm2();
 	void normalize();
 	Vector2d getNormalizeVector();
 

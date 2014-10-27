@@ -17,6 +17,10 @@ void Game::init(){
 	pockets.push_back(Pocket(WINDOW_WIDTH/2, FIELD_BOTTOM - a));
 
 	player = Player(200, 200, GetColor(255, 255, 255));
+	balls.push_back(&player);
+	
+	Ball ball = Ball(600, 200, GetColor(255, 0, 0));
+	balls.push_back(&ball);
 }
 
 void Game::boardShow(){
@@ -62,7 +66,7 @@ void Game::clickCheck(){
 		GetMousePoint(&x, &y);
 		direction = Vector2d(x, y) - player.getT();
 		direction.normalize();
-		player.setV(5 * direction);
+		player.setV(4 * direction);
 		movingBalls.push_back(&player);
 	}
 }

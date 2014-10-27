@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include"Vector2d.h"
+#include<vector>
 
 class Ball{
 protected:
@@ -29,4 +30,6 @@ public:
 
 	bool movingCheck();
 	void move();
+
+	void collision(std::vector<Ball*> balls);
 };

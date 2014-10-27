@@ -44,6 +44,11 @@ float Vector2d::norm(){
 	return sqrt(x*x + y*y);
 }
 
+//ƒmƒ‹ƒ€‚Ì‚Qæ
+float Vector2d::norm2(){
+	return x*x + y*y;
+}
+
 //³‹K‰»
 void Vector2d::normalize(){
 	*this = *this / norm();

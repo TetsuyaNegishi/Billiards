@@ -85,3 +85,11 @@ void Ball::move(){
 	else
 		v = FRICTON_FORCE_SIZE*v;
 }
+
+void Ball::collision(std::vector<Ball*> balls){
+	std::vector<Ball*> collisionBall;
+	for (std::vector<Ball*>::iterator ball = balls.begin(); ball != balls.end(); ball++)
+		if ( (this->getT - (*ball)->getT).norm2() < this->getSize() * this->getSize() )
+			collisionBall.push_back(*ball);
+
+}
