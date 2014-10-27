@@ -57,6 +57,10 @@ void Ball::setV(Vector2d vi){
 	v = vi;
 }
 
+Vector2d Ball::getV(){
+	return v;
+}
+
 int Ball::getColor(){
 	return color;
 }
@@ -87,12 +91,20 @@ void Ball::move(){
 }
 
 void Ball::collision(std::vector<Ball*> balls){
-	std::vector<Ball*> collisionBall;
+	//std::vector<Ball*> collisionBall;
+	Vector2d sigmentBallThis;
+	float dotThis, dotBall;
 	for (std::vector<Ball*>::iterator ball = balls.begin(); ball != balls.end(); ball++){
+		if (this == (*ball))
+			continue;
 		if ((this->getT() - (*ball)->getT()).norm2() < this->getSize() * this->getSize()){
-			if (this == (*ball))
-				continue;
-			collisionBall.push_back(*ball);
+			sigmentBallThis = (this->getT() - (*ball)->getT()).getNormalizeVector();
+			dotThis = this->getV() * sigmentBallThis;
+			dotBall = (*ball)->getV() * sigmentBallThis;
+			this->setV(dotThis * sigmentBallThis);
+			(*ball)->setV(dotBall * sigmentBallThis);
+			//	collisionBall.push_back(*ball);
 		}
 	}
+
 }

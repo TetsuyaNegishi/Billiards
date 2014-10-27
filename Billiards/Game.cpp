@@ -46,7 +46,8 @@ void Game::boardShow(){
 }
 
 void Game::ballShow(){
-	DrawCircle(player.getXi(), player.getYi(), player.getSize(), player.getColor());
+	for (std::vector<Ball*>::iterator ball = balls.begin(); ball != balls.end(); ball++)
+		DrawCircle((*ball)->getXi(), (*ball)->getYi(), (*ball)->getSize(), (*ball)->getColor());
 }
 
 void Game::update(){
