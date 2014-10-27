@@ -94,20 +94,23 @@ void Ball::move(){
 		v = FRICTON_FORCE_SIZE*v;
 }
 
-void Ball::collision(std::vector<Ball*> balls, std::vector<Ball*> movingBalls){
+void Ball::collision(std::vector<Ball*>* balls, std::vector<Ball*>* movingBalls){
 	//std::vector<Ball*> collisionBall;
-	Vector2d sigmentBallThis;
+	Vector2d sigmentBallThis, thisV, ballV;
 	float dotThis, dotBall;
-	for (std::vector<Ball*>::iterator ball = balls.begin(); ball != balls.end(); ball++){
+	for (std::vector<Ball*>::iterator ball = (*balls).begin(); ball != (*balls).end(); ball++){
 		if (this == (*ball))
 			continue;
 		if ((this->getT() - (*ball)->getT()).norm2() < pow(this->getSize()+(*ball)->getSize(), 2)){
 			sigmentBallThis = (this->getT() - (*ball)->getT()).getNormalizeVector();
 			dotThis = this->getV() * sigmentBallThis;
 			dotBall = (*ball)->getV() * sigmentBallThis;
-			this->setV(dotThis * sigmentBallThis);
-			(*ball)->setV(dotBall * sigmentBallThis);
-			movingBalls.push_back(*ball);
+			thisV = this->getV() + (dotBall - dotThis) * sigmentBallThis;
+			ballV = (*ball)->getV() + (dotThis - dotBall) * sigmentBallThis;
+			this->setV(thisV);
+			(*ball)->setV(ballV);
+			movingBalls->push_back(*ball);
+			break;
 			//	collisionBall.push_back(*ball);
 		}
 	}

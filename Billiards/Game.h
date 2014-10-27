@@ -13,8 +13,10 @@ private:
 	std::vector<Ball*> movingBalls;
 	void boardShow();
 	void ballShow();
+	void collision(Ball* movingBall);
 	void update();
 	void clickCheck();
+
 
 public:
 	static const int WINDOW_WIDTH = 800;	//ウィンドウ幅

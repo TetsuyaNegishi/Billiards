@@ -33,5 +33,5 @@ public:
 	bool movingCheck();
 	void move();
 
-	void collision(std::vector<Ball*> balls, std::vector<Ball*> movingBalls);
+	void collision(std::vector<Ball*>* balls, std::vector<Ball*>* movingBalls);
 };

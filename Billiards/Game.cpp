@@ -54,10 +54,30 @@ void Game::ballShow(){
 		DrawCircle((*ball)->getXi(), (*ball)->getYi(), (*ball)->getSize(), (*ball)->getColor());
 }
 
+void Game::collision(Ball* movingBall){
+	Vector2d sigmentBallThis, thisV, ballV;
+	float dotThis, dotBall;
+	for (std::vector<Ball*>::iterator ball = balls.begin(); ball != balls.end(); ball++){
+		if (movingBall == (*ball))
+			continue;
+		if ((movingBall->getT() - (*ball)->getT()).norm2() < pow(movingBall->getSize() + (*ball)->getSize(), 2)){
+			sigmentBallThis = (movingBall->getT() - (*ball)->getT()).getNormalizeVector();
+			dotThis = movingBall->getV() * sigmentBallThis;
+			dotBall = (*ball)->getV() * sigmentBallThis;
+			thisV = movingBall->getV() + (dotBall - dotThis) * sigmentBallThis;
+			ballV = (*ball)->getV() + (dotThis - dotBall) * sigmentBallThis;
+			movingBall->setV(thisV);
+			(*ball)->setV(ballV);
+			movingBalls.push_back(*ball);
+			break;
+		}
+	}
+}
+
 void Game::update(){
 	for (std::vector<Ball*>::iterator movingBall = movingBalls.begin(); movingBall != movingBalls.end();){
 		(*movingBall)->move();
-		(*movingBall)->collision(balls, movingBalls);
+		collision(*movingBall);
 		if ((*movingBall)->movingCheck() == false)
 			movingBall = movingBalls.erase(movingBall);
 		else
