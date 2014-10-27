@@ -94,19 +94,20 @@ void Ball::move(){
 		v = FRICTON_FORCE_SIZE*v;
 }
 
-void Ball::collision(std::vector<Ball*> balls){
+void Ball::collision(std::vector<Ball*> balls, std::vector<Ball*> movingBalls){
 	//std::vector<Ball*> collisionBall;
 	Vector2d sigmentBallThis;
 	float dotThis, dotBall;
 	for (std::vector<Ball*>::iterator ball = balls.begin(); ball != balls.end(); ball++){
 		if (this == (*ball))
 			continue;
-		if ((this->getT() - (*ball)->getT()).norm2() < this->getSize() * this->getSize()){
+		if ((this->getT() - (*ball)->getT()).norm2() < pow(this->getSize()+(*ball)->getSize(), 2)){
 			sigmentBallThis = (this->getT() - (*ball)->getT()).getNormalizeVector();
 			dotThis = this->getV() * sigmentBallThis;
 			dotBall = (*ball)->getV() * sigmentBallThis;
 			this->setV(dotThis * sigmentBallThis);
 			(*ball)->setV(dotBall * sigmentBallThis);
+			movingBalls.push_back(*ball);
 			//	collisionBall.push_back(*ball);
 		}
 	}

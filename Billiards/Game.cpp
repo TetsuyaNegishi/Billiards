@@ -17,9 +17,13 @@ void Game::init(){
 	pockets.push_back(Pocket(WINDOW_WIDTH/2, FIELD_BOTTOM - a));
 
 	player = Player(200, 200, GetColor(255, 255, 255));
+	//player.setV(Vector2d(1, 1));
+	//movingBalls.push_back(&player);
 	balls.push_back(&player);
 	
-	auto ball = new Ball(600, 200, GetColor(255, 255, 255));
+	auto ball = new Ball(300, 200, GetColor(255, 255, 255));
+	//ball->setV(Vector2d(0.5, 0.5));
+	//movingBalls.push_back(ball);
 	balls.push_back(ball);
 }
 
@@ -53,7 +57,7 @@ void Game::ballShow(){
 void Game::update(){
 	for (std::vector<Ball*>::iterator movingBall = movingBalls.begin(); movingBall != movingBalls.end();){
 		(*movingBall)->move();
-		(*movingBall)->collision(balls);
+		(*movingBall)->collision(balls, movingBalls);
 		if ((*movingBall)->movingCheck() == false)
 			movingBall = movingBalls.erase(movingBall);
 		else
