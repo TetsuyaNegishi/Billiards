@@ -88,8 +88,11 @@ void Ball::move(){
 
 void Ball::collision(std::vector<Ball*> balls){
 	std::vector<Ball*> collisionBall;
-	for (std::vector<Ball*>::iterator ball = balls.begin(); ball != balls.end(); ball++)
-		if ( (this->getT - (*ball)->getT).norm2() < this->getSize() * this->getSize() )
+	for (std::vector<Ball*>::iterator ball = balls.begin(); ball != balls.end(); ball++){
+		if ((this->getT() - (*ball)->getT()).norm2() < this->getSize() * this->getSize()){
+			if (this == (*ball))
+				continue;
 			collisionBall.push_back(*ball);
-
+		}
+	}
 }
