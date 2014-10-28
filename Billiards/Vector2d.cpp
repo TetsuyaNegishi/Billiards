@@ -56,7 +56,6 @@ void Vector2d::normalize(){
 
 Vector2d Vector2d::getNormalizeVector(){
 	return *this / norm();
-	//return Vector2d(x / norm(), y / norm());
 }
 
 //“ñ€‰‰Zq

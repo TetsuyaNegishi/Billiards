@@ -17,14 +17,14 @@ void Game::init(){
 	pockets.push_back(Pocket(WINDOW_WIDTH/2, FIELD_BOTTOM - a));
 
 	player = Player(200, 200, GetColor(255, 255, 255));
-	//player.setV(Vector2d(1, 1));
-	//movingBalls.push_back(&player);
 	balls.push_back(&player);
 	
-	auto ball = new Ball(300, 200, GetColor(255, 255, 255));
-	//ball->setV(Vector2d(0.5, 0.5));
-	//movingBalls.push_back(ball);
-	balls.push_back(ball);
+	for (int i = 1; i <= 9; i++){
+		auto ball = new Ball(50*i + 50, 100, GetColor(255, 0, 255));
+		//ball->setV(Vector2d(0.5, 0.5));
+		//movingBalls.push_back(ball);
+		balls.push_back(ball);
+	}
 }
 
 void Game::boardShow(){
@@ -56,18 +56,18 @@ void Game::ballShow(){
 
 Ball* Game::collision(Ball* movingBall){
 	Ball* addMovingBall = 0;
-	Vector2d sigmentBallThis, thisV, ballV;
-	float dotThis, dotBall;
+	Vector2d sigmentBallThis, movingBallV, ballV;
+	float dotMovingBall, dotBall;
 	for (std::vector<Ball*>::iterator ball = balls.begin(); ball != balls.end(); ball++){
 		if (movingBall == (*ball))
 			continue;
 		if ((movingBall->getT() - (*ball)->getT()).norm2() < pow(movingBall->getSize() + (*ball)->getSize(), 2)){
 			sigmentBallThis = (movingBall->getT() - (*ball)->getT()).getNormalizeVector();
-			dotThis = movingBall->getV() * sigmentBallThis;
-			dotBall = (*ball)->getV() * sigmentBallThis;
-			thisV = movingBall->getV() + (dotBall - dotThis) * sigmentBallThis;
-			ballV = (*ball)->getV() + (dotThis - dotBall) * sigmentBallThis;
-			movingBall->setV(thisV);
+			dotMovingBall = ((*ball)->getV() - movingBall->getV()) * sigmentBallThis;
+			dotBall = (movingBall->getV() - (*ball)->getV()) * sigmentBallThis;
+			movingBallV = dotMovingBall * sigmentBallThis + movingBall->getV();
+			ballV = dotBall * sigmentBallThis + (*ball)->getV();
+			movingBall->setV(movingBallV);
 			(*ball)->setV(ballV);
 			addMovingBall = *ball;
 			break;
@@ -77,6 +77,24 @@ Ball* Game::collision(Ball* movingBall){
 }
 
 void Game::update(){
+	Vector2d sigmentIJ, iV, jV;
+	float dotI, dotJ;
+	for (unsigned int i = 0; i < balls.size(); i++){
+		for (unsigned int j = i+1; j < balls.size(); j++){
+			if ((balls[i]->getT() - balls[j]->getT()).norm2() < pow(balls[i]->getSize() + balls[j]->getSize(), 2)){
+				sigmentIJ= (balls[i]->getT() - balls[j]->getT()).getNormalizeVector();
+				dotI = (balls[j]->getV() - balls[i]->getV()) * sigmentIJ;
+				dotJ = (balls[i]->getV() - balls[j]->getV()) * sigmentIJ;
+				iV = dotI * sigmentIJ + balls[i]->getV();
+				jV = dotJ * sigmentIJ + balls[j]->getV();
+				balls[i]->setV(iV);
+				balls[j]->setV(jV);
+			}
+		}
+		if (balls[i]->movingCheck() == TRUE)
+			balls[i]->move();
+	}
+	/*
 	std::vector<Ball*> addMovingBalls;
 	Ball* addMovingBall = 0;
 	for (std::vector<Ball*>::iterator movingBall = movingBalls.begin(); movingBall != movingBalls.end();){
@@ -92,6 +110,7 @@ void Game::update(){
 	for (std::vector<Ball*>::iterator movingBall = addMovingBalls.begin(); movingBall != addMovingBalls.end(); movingBall++){
 		movingBalls.push_back(*movingBall);
 	}
+	*/
 }
 
 void Game::clickCheck(){
@@ -99,9 +118,9 @@ void Game::clickCheck(){
 	Vector2d direction;
 	if (GetMouseInput() & MOUSE_INPUT_LEFT){
 		GetMousePoint(&x, &y);
-		direction = Vector2d(x, y) - player.getT();
+		direction = Vector2d((float)x, (float)y) - player.getT();
 		direction.normalize();
-		player.setV(4 * direction);
+		player.setV(5 * direction);
 		movingBalls.push_back(&player);
 	}
 }
@@ -110,9 +129,9 @@ void Game::main(){
 	while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0){
 		boardShow();
 		ballShow();
-		if (movingBalls.size() == 0)
+		//if (movingBalls.size() == 0)
 			clickCheck();
-		else
+		//else
 			update();
 	}
 }
