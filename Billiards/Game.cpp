@@ -88,9 +88,8 @@ void Game::update(){
 			movingBall = movingBalls.erase(movingBall);
 		else
 			movingBall++;
-
 	}
-	for (std::vector<Ball*>::iterator movingBall = addMovingBalls.begin(); movingBall != addMovingBalls.end();){
+	for (std::vector<Ball*>::iterator movingBall = addMovingBalls.begin(); movingBall != addMovingBalls.end(); movingBall++){
 		movingBalls.push_back(*movingBall);
 	}
 }
