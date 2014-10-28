@@ -2,8 +2,8 @@
 #include"Game.h"
 #include<math.h>
 
-const int Ball::SIZE = 10;
-const float Ball::FRICTON_FORCE_SIZE = 0.99;
+const int Ball::SIZE = 15;
+const float Ball::FRICTON_FORCE_SIZE = 0.995;
 
 Ball::Ball(){
 	v = Vector2d(0, 0);
@@ -92,27 +92,4 @@ void Ball::move(){
 		v = Vector2d(0, 0);
 	else
 		v = FRICTON_FORCE_SIZE*v;
-}
-
-void Ball::collision(std::vector<Ball*>* balls, std::vector<Ball*>* movingBalls){
-	//std::vector<Ball*> collisionBall;
-	Vector2d sigmentBallThis, thisV, ballV;
-	float dotThis, dotBall;
-	for (std::vector<Ball*>::iterator ball = (*balls).begin(); ball != (*balls).end(); ball++){
-		if (this == (*ball))
-			continue;
-		if ((this->getT() - (*ball)->getT()).norm2() < pow(this->getSize()+(*ball)->getSize(), 2)){
-			sigmentBallThis = (this->getT() - (*ball)->getT()).getNormalizeVector();
-			dotThis = this->getV() * sigmentBallThis;
-			dotBall = (*ball)->getV() * sigmentBallThis;
-			thisV = this->getV() + (dotBall - dotThis) * sigmentBallThis;
-			ballV = (*ball)->getV() + (dotThis - dotBall) * sigmentBallThis;
-			this->setV(thisV);
-			(*ball)->setV(ballV);
-			movingBalls->push_back(*ball);
-			break;
-			//	collisionBall.push_back(*ball);
-		}
-	}
-
 }

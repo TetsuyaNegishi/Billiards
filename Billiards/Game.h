@@ -2,6 +2,7 @@
 
 #include<DxLib.h>
 #include<vector>
+#include<set>
 #include"Pocket.h"
 #include"Player.h"
 
@@ -10,12 +11,13 @@ private:
 	Player player;
 	std::vector<Pocket> pockets;
 	std::vector<Ball*> balls;
-	std::vector<Ball*> movingBalls;
+	std::set<Ball*> movingBalls;
 	void boardShow();
 	void ballShow();
 	Ball* collision(Ball* movingBall);
 	void update();
-	void clickCheck();
+	void clickCheck(bool* ballsMoving);
+	bool ballsMovingCheck();
 
 
 public:
