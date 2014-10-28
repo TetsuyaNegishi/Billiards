@@ -13,7 +13,7 @@ private:
 	std::vector<Ball*> movingBalls;
 	void boardShow();
 	void ballShow();
-	void collision(Ball* movingBall);
+	Ball* collision(Ball* movingBall);
 	void update();
 	void clickCheck();
 
