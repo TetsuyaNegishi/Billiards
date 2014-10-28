@@ -1,8 +1,54 @@
 #include"Game.h"
-#include<DxLib.h>
-#include<vector>
 
 Game::Game(){}
+
+//ウィンドウサイズ指定
+const int Game::WINDOW_WIDTH = 800;	//ウィンドウ幅
+const int Game::WINDOW_HEIGHT = 450;	//ウィンドウ高さ
+const int Game::STATUS_HEIGHT = 50;	//ステータス表示幅
+
+//ボード座標指定
+static const int BOARD_VALUE = 15;
+const int Game::BOARD_LEFT = BOARD_VALUE;
+const int Game::BOARD_RIGHT = WINDOW_WIDTH - BOARD_VALUE;
+const int Game::BOARD_TOP = BOARD_VALUE;
+const int Game::BOARD_BOTTOM = WINDOW_HEIGHT - STATUS_HEIGHT - BOARD_VALUE;
+
+//フィールド座標指定
+static const int FIELD_VALUE = 20;
+const int Game::FIELD_LEFT = BOARD_LEFT + FIELD_VALUE;
+const int Game::FIELD_RIGHT = BOARD_RIGHT - FIELD_VALUE;
+const int Game::FIELD_TOP = BOARD_TOP + FIELD_VALUE;
+const int Game::FIELD_BOTTOM = BOARD_BOTTOM - FIELD_VALUE;
+
+//クッション座標指定
+static const int CUSHION_VALUE = 15;
+const int Game::CUSHION_LEFT = FIELD_LEFT + CUSHION_VALUE;
+const int Game::CUSHION_RIGHT = FIELD_RIGHT - CUSHION_VALUE;
+const int Game::CUSHION_TOP = FIELD_TOP + CUSHION_VALUE;
+const int Game::CUSHION_BOTTOM = FIELD_BOTTOM - CUSHION_VALUE;
+static const int CUSHION_SIZE = Pocket::SIZE + 8;
+static const int CUSHION_EDGE = 17;
+const int Game::CUSHION_POSITION[][8] = { 
+		//左クッション
+		{ FIELD_LEFT, FIELD_TOP + CUSHION_SIZE, CUSHION_LEFT, FIELD_TOP + CUSHION_SIZE + CUSHION_EDGE, 
+		FIELD_LEFT, FIELD_BOTTOM - CUSHION_SIZE, CUSHION_LEFT, FIELD_BOTTOM - CUSHION_SIZE - CUSHION_EDGE },
+		//右クッション
+		{ FIELD_RIGHT, FIELD_TOP + CUSHION_SIZE, CUSHION_RIGHT, FIELD_TOP + CUSHION_SIZE + CUSHION_EDGE,
+		FIELD_RIGHT, FIELD_BOTTOM - CUSHION_SIZE, CUSHION_RIGHT, FIELD_BOTTOM - CUSHION_SIZE - CUSHION_EDGE },
+		//左上クッション
+		{ FIELD_LEFT + CUSHION_SIZE, FIELD_TOP, FIELD_LEFT + CUSHION_SIZE + CUSHION_EDGE, CUSHION_TOP, 
+		WINDOW_WIDTH / 2 - CUSHION_SIZE + 10, FIELD_TOP, WINDOW_WIDTH / 2 - CUSHION_SIZE + 10 - CUSHION_EDGE, CUSHION_TOP },
+		//右上クッション
+		{ FIELD_RIGHT - CUSHION_SIZE, FIELD_TOP, FIELD_RIGHT - CUSHION_SIZE - CUSHION_EDGE, CUSHION_TOP, 
+		WINDOW_WIDTH / 2 + CUSHION_SIZE - 10, FIELD_TOP, WINDOW_WIDTH / 2 + CUSHION_SIZE - 10 + CUSHION_EDGE, CUSHION_TOP },
+		//左下クッション
+		{ FIELD_LEFT + CUSHION_SIZE, FIELD_BOTTOM, FIELD_LEFT + CUSHION_SIZE + CUSHION_EDGE, CUSHION_BOTTOM, 
+		WINDOW_WIDTH / 2 - CUSHION_SIZE + 10, FIELD_BOTTOM, WINDOW_WIDTH / 2 - CUSHION_SIZE + 10 - CUSHION_EDGE, CUSHION_BOTTOM },
+		//右下クッション
+		{ FIELD_RIGHT - CUSHION_SIZE, FIELD_BOTTOM, FIELD_RIGHT - CUSHION_SIZE - CUSHION_EDGE, CUSHION_BOTTOM, 
+		WINDOW_WIDTH / 2 + CUSHION_SIZE - 10, FIELD_BOTTOM, WINDOW_WIDTH / 2 + CUSHION_SIZE - 10 + CUSHION_EDGE, CUSHION_BOTTOM }
+};
 
 void Game::init(){
 	SetBackgroundColor(255, 255, 255), SetGraphMode(WINDOW_WIDTH, WINDOW_HEIGHT, 16); //背景色設定とウィンドウサイズ設定
@@ -25,6 +71,11 @@ void Game::init(){
 	}
 }
 
+void DrawSquare(const int position[8], int color){
+	DrawTriangle(position[0], position[1], position[2], position[3], position[4], position[5], color, TRUE);
+	DrawTriangle(position[2], position[3], position[4], position[5], position[6], position[7], color, TRUE);
+}
+
 void Game::boardShow(){
 	const int BROWN = GetColor(153, 76, 0);
 	const int DARK_GREEN = GetColor(0, 100, 0);
@@ -34,28 +85,16 @@ void Game::boardShow(){
 	//ビリヤード盤描画
 	DrawBox(BOARD_LEFT, BOARD_TOP, BOARD_RIGHT, BOARD_BOTTOM, BROWN, TRUE);
 	DrawBox(FIELD_LEFT, FIELD_TOP, FIELD_RIGHT, FIELD_BOTTOM, DARK_GREEN, TRUE);
-	//クッション描画
-	int size = Pocket::SIZE+8;
-	int edge = 17;
-	//左クッション
-	DrawTriangle(FIELD_LEFT, FIELD_TOP + size, CUSHION_LEFT, FIELD_TOP + size + edge, FIELD_LEFT, FIELD_BOTTOM - size, GREEN, TRUE);	
-	DrawTriangle(CUSHION_LEFT, FIELD_TOP + size + edge, FIELD_LEFT, FIELD_BOTTOM - size, CUSHION_LEFT, FIELD_BOTTOM - size - edge, GREEN, TRUE);
-	//右クッション
-	DrawTriangle(FIELD_RIGHT, FIELD_TOP + size, CUSHION_RIGHT, FIELD_TOP + size + edge, FIELD_RIGHT, FIELD_BOTTOM - size, GREEN, TRUE);
-	DrawTriangle(CUSHION_RIGHT, FIELD_TOP + size + edge, FIELD_RIGHT, FIELD_BOTTOM - size, CUSHION_RIGHT, FIELD_BOTTOM - size - edge, GREEN, TRUE);
-	//左上クッション
-	DrawTriangle(FIELD_LEFT + size, FIELD_TOP, FIELD_LEFT + size + edge, CUSHION_TOP, WINDOW_WIDTH / 2 - size + 10, FIELD_TOP, GREEN, TRUE);
-	DrawTriangle(FIELD_LEFT + size + edge, CUSHION_TOP, WINDOW_WIDTH / 2 - size + 10, FIELD_TOP, WINDOW_WIDTH / 2 - size + 10 - edge, CUSHION_TOP, GREEN, TRUE);
-	//右上クッション
-	DrawTriangle(FIELD_RIGHT - size, FIELD_TOP, FIELD_RIGHT - size - edge, CUSHION_TOP, WINDOW_WIDTH / 2 + size - 10, FIELD_TOP, GREEN, TRUE);
-	DrawTriangle(FIELD_RIGHT - size - edge, CUSHION_TOP, WINDOW_WIDTH / 2 + size - 10, FIELD_TOP, WINDOW_WIDTH / 2 + size - 10 + edge, CUSHION_TOP, GREEN, TRUE);
-	//左下クッション
-	DrawTriangle(FIELD_LEFT + size, FIELD_BOTTOM, FIELD_LEFT + size + edge, CUSHION_BOTTOM, WINDOW_WIDTH / 2 - size + 10, FIELD_BOTTOM, GREEN, TRUE);
-	DrawTriangle(FIELD_LEFT + size + edge, CUSHION_BOTTOM, WINDOW_WIDTH / 2 - size + 10, FIELD_BOTTOM, WINDOW_WIDTH / 2 - size + 10 - edge, CUSHION_BOTTOM, GREEN, TRUE);
-	//右下クッション
-	DrawTriangle(FIELD_RIGHT - size, FIELD_BOTTOM, FIELD_RIGHT - size - edge, CUSHION_BOTTOM, WINDOW_WIDTH / 2 + size - 10, FIELD_BOTTOM, GREEN, TRUE);
-	DrawTriangle(FIELD_RIGHT - size - edge, CUSHION_BOTTOM, WINDOW_WIDTH / 2 + size - 10, FIELD_BOTTOM, WINDOW_WIDTH / 2 + size - 10 + edge, CUSHION_BOTTOM, GREEN, TRUE);
 
+	//クッション描画
+	DrawSquare(CUSHION_POSITION[0], GREEN);
+	DrawSquare(CUSHION_POSITION[1], GREEN);
+	DrawSquare(CUSHION_POSITION[2], GREEN);
+	DrawSquare(CUSHION_POSITION[3], GREEN);
+	DrawSquare(CUSHION_POSITION[4], GREEN);
+	DrawSquare(CUSHION_POSITION[5], GREEN);
+	DrawSquare(CUSHION_POSITION[6], GREEN);
+	DrawSquare(CUSHION_POSITION[7], GREEN);
 
 	//ポケット描画
 	Pocket pocket;
@@ -84,8 +123,6 @@ void Game::update(){
 				jV = dotJ * sigmentIJ + balls[j]->getV();
 				balls[i]->setV(iV);
 				balls[j]->setV(jV);
-				movingBalls.insert(balls[i]);
-				movingBalls.insert(balls[j]);
 			}
 		}
 	}

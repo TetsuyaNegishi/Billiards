@@ -2,7 +2,6 @@
 
 #include<DxLib.h>
 #include<vector>
-#include<set>
 #include"Pocket.h"
 #include"Player.h"
 
@@ -11,37 +10,37 @@ private:
 	Player player;
 	std::vector<Pocket> pockets;
 	std::vector<Ball*> balls;
-	std::set<Ball*> movingBalls;
 	void boardShow();
 	void ballShow();
-	Ball* collision(Ball* movingBall);
 	void update();
 	void clickCheck(bool* ballsMoving);
 	bool ballsMovingCheck();
 
 
 public:
-	static const int WINDOW_WIDTH = 800;	//ウィンドウ幅
-	static const int WINDOW_HEIGHT = 450;	//ウィンドウ高さ
-	static const int STATUS_HEIGHT = 50;	//ステータス表示幅
+	//ウィンドウサイズ指定
+	static const int WINDOW_WIDTH;	//ウィンドウ幅
+	static const int WINDOW_HEIGHT;	//ウィンドウ高さ
+	static const int STATUS_HEIGHT;	//ステータス表示幅
+
 	//ボード座標指定
-	static const int a = 15;
-	static const int BOARD_LEFT = a;
-	static const int BOARD_RIGHT = WINDOW_WIDTH - a;
-	static const int BOARD_TOP = a;
-	static const int BOARD_BOTTOM = WINDOW_HEIGHT - STATUS_HEIGHT - a;
+	static const int BOARD_LEFT;
+	static const int BOARD_RIGHT;
+	static const int BOARD_TOP;
+	static const int BOARD_BOTTOM;
+
 	//フィールド座標指定
-	static const int b = 20;
-	static const int FIELD_LEFT = BOARD_LEFT + b;
-	static const int FIELD_RIGHT = BOARD_RIGHT - b;
-	static const int FIELD_TOP = BOARD_TOP + b;
-	static const int FIELD_BOTTOM = BOARD_BOTTOM - b;
+	static const int FIELD_LEFT;
+	static const int FIELD_RIGHT;
+	static const int FIELD_TOP;
+	static const int FIELD_BOTTOM;
+
 	//クッション座標指定
-	static const int c = 15;
-	static const int CUSHION_LEFT = FIELD_LEFT + c;
-	static const int CUSHION_RIGHT = FIELD_RIGHT - c;
-	static const int CUSHION_TOP = FIELD_TOP + c;
-	static const int CUSHION_BOTTOM = FIELD_BOTTOM - c;
+	static const int CUSHION_LEFT;
+	static const int CUSHION_RIGHT;
+	static const int CUSHION_TOP;
+	static const int CUSHION_BOTTOM;
+	static const int CUSHION_POSITION[][8];
 
 	Game();
 	void init();
