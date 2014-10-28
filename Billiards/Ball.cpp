@@ -92,4 +92,5 @@ void Ball::move(){
 		v = Vector2d(0, 0);
 	else
 		v = FRICTON_FORCE_SIZE*v;
+
 }

@@ -35,10 +35,28 @@ void Game::boardShow(){
 	DrawBox(BOARD_LEFT, BOARD_TOP, BOARD_RIGHT, BOARD_BOTTOM, BROWN, TRUE);
 	DrawBox(FIELD_LEFT, FIELD_TOP, FIELD_RIGHT, FIELD_BOTTOM, DARK_GREEN, TRUE);
 	//クッション描画
-	DrawBox(FIELD_LEFT, FIELD_TOP, CUSHION_LEFT, FIELD_BOTTOM, GREEN, TRUE);		//左クッション
-	DrawBox(FIELD_RIGHT, FIELD_TOP, CUSHION_RIGHT, FIELD_BOTTOM, GREEN, TRUE);		//右クッション
-	DrawBox(FIELD_LEFT, FIELD_TOP, FIELD_RIGHT, CUSHION_TOP, GREEN, TRUE);			//上クッション
-	DrawBox(FIELD_LEFT, FIELD_BOTTOM, FIELD_RIGHT, CUSHION_BOTTOM, GREEN, TRUE);	//下クッション
+	int size = Pocket::SIZE+8;
+	int edge = 17;
+	//左クッション
+	DrawTriangle(FIELD_LEFT, FIELD_TOP + size, CUSHION_LEFT, FIELD_TOP + size + edge, FIELD_LEFT, FIELD_BOTTOM - size, GREEN, TRUE);	
+	DrawTriangle(CUSHION_LEFT, FIELD_TOP + size + edge, FIELD_LEFT, FIELD_BOTTOM - size, CUSHION_LEFT, FIELD_BOTTOM - size - edge, GREEN, TRUE);
+	//右クッション
+	DrawTriangle(FIELD_RIGHT, FIELD_TOP + size, CUSHION_RIGHT, FIELD_TOP + size + edge, FIELD_RIGHT, FIELD_BOTTOM - size, GREEN, TRUE);
+	DrawTriangle(CUSHION_RIGHT, FIELD_TOP + size + edge, FIELD_RIGHT, FIELD_BOTTOM - size, CUSHION_RIGHT, FIELD_BOTTOM - size - edge, GREEN, TRUE);
+	//左上クッション
+	DrawTriangle(FIELD_LEFT + size, FIELD_TOP, FIELD_LEFT + size + edge, CUSHION_TOP, WINDOW_WIDTH / 2 - size + 10, FIELD_TOP, GREEN, TRUE);
+	DrawTriangle(FIELD_LEFT + size + edge, CUSHION_TOP, WINDOW_WIDTH / 2 - size + 10, FIELD_TOP, WINDOW_WIDTH / 2 - size + 10 - edge, CUSHION_TOP, GREEN, TRUE);
+	//右上クッション
+	DrawTriangle(FIELD_RIGHT - size, FIELD_TOP, FIELD_RIGHT - size - edge, CUSHION_TOP, WINDOW_WIDTH / 2 + size - 10, FIELD_TOP, GREEN, TRUE);
+	DrawTriangle(FIELD_RIGHT - size - edge, CUSHION_TOP, WINDOW_WIDTH / 2 + size - 10, FIELD_TOP, WINDOW_WIDTH / 2 + size - 10 + edge, CUSHION_TOP, GREEN, TRUE);
+	//左下クッション
+	DrawTriangle(FIELD_LEFT + size, FIELD_BOTTOM, FIELD_LEFT + size + edge, CUSHION_BOTTOM, WINDOW_WIDTH / 2 - size + 10, FIELD_BOTTOM, GREEN, TRUE);
+	DrawTriangle(FIELD_LEFT + size + edge, CUSHION_BOTTOM, WINDOW_WIDTH / 2 - size + 10, FIELD_BOTTOM, WINDOW_WIDTH / 2 - size + 10 - edge, CUSHION_BOTTOM, GREEN, TRUE);
+	//右下クッション
+	DrawTriangle(FIELD_RIGHT - size, FIELD_BOTTOM, FIELD_RIGHT - size - edge, CUSHION_BOTTOM, WINDOW_WIDTH / 2 + size - 10, FIELD_BOTTOM, GREEN, TRUE);
+	DrawTriangle(FIELD_RIGHT - size - edge, CUSHION_BOTTOM, WINDOW_WIDTH / 2 + size - 10, FIELD_BOTTOM, WINDOW_WIDTH / 2 + size - 10 + edge, CUSHION_BOTTOM, GREEN, TRUE);
+
+
 	//ポケット描画
 	Pocket pocket;
 	for (unsigned int i = 0; i < pockets.size(); i++){

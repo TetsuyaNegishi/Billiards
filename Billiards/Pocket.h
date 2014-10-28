@@ -5,8 +5,10 @@
 class Pocket{
 private:
 	Vector2d t;
-	static const int SIZE;
+
 public:
+	static const int SIZE;
+
 	Pocket();
 	Pocket(int x, int y);
 	int getSize();

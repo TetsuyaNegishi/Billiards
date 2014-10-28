@@ -31,7 +31,7 @@ public:
 	static const int BOARD_TOP = a;
 	static const int BOARD_BOTTOM = WINDOW_HEIGHT - STATUS_HEIGHT - a;
 	//フィールド座標指定
-	static const int b = 30;
+	static const int b = 20;
 	static const int FIELD_LEFT = BOARD_LEFT + b;
 	static const int FIELD_RIGHT = BOARD_RIGHT - b;
 	static const int FIELD_TOP = BOARD_TOP + b;
