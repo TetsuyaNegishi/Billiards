@@ -130,8 +130,10 @@ void Game::update(){
 	float dotI, dotJ;
 	for (unsigned int i = 0; i < balls.size(); i++){
 		if (pocketInCheck(balls[i]) == true){
-			//if (balls[i] == player)
-			balls.erase(balls.begin() + i);
+			if (balls[i] == &player)
+				player.setY(300);
+			else
+				balls.erase(balls.begin() + i);
 			i--;
 			continue;
 		}
