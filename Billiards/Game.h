@@ -8,7 +8,7 @@
 class Game{
 private:
 	Player player;
-	std::vector<Pocket> pockets;
+	std::vector<Pocket*> pockets;
 	std::vector<Ball*> balls;
 	void boardShow();
 	void ballShow();

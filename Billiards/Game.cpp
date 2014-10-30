@@ -50,32 +50,38 @@ const int Game::CUSHION_POSITION[][8] = {
 		WINDOW_WIDTH / 2 + CUSHION_SIZE - 10, FIELD_BOTTOM, WINDOW_WIDTH / 2 + CUSHION_SIZE - 10 + CUSHION_EDGE, CUSHION_BOTTOM }
 };
 
+
+//ゲームの初期化
 void Game::init(){
 	SetBackgroundColor(255, 255, 255), SetGraphMode(WINDOW_WIDTH, WINDOW_HEIGHT, 16); //背景色設定とウィンドウサイズ設定
 	ChangeWindowMode(TRUE), DxLib_Init(), SetDrawScreen(DX_SCREEN_BACK); //ウィンドウモード変更と初期化と裏画面設定
 
+	//ポケット初期設定
 	const int a = 10;
-	pockets.push_back(Pocket(FIELD_LEFT + a, FIELD_TOP + a));
-	pockets.push_back(Pocket(FIELD_RIGHT - a, FIELD_TOP + a));
-	pockets.push_back(Pocket(FIELD_LEFT + a, FIELD_BOTTOM - a));
-	pockets.push_back(Pocket(FIELD_RIGHT - a, FIELD_BOTTOM - a));
-	pockets.push_back(Pocket(WINDOW_WIDTH/2, FIELD_TOP + a));
-	pockets.push_back(Pocket(WINDOW_WIDTH/2, FIELD_BOTTOM - a));
+	pockets.push_back(new Pocket(FIELD_LEFT + a, FIELD_TOP + a));
+	pockets.push_back(new Pocket(FIELD_RIGHT - a, FIELD_TOP + a));
+	pockets.push_back(new Pocket(FIELD_LEFT + a, FIELD_BOTTOM - a));
+	pockets.push_back(new Pocket(FIELD_RIGHT - a, FIELD_BOTTOM - a));
+	pockets.push_back(new Pocket(WINDOW_WIDTH/2, FIELD_TOP + a));
+	pockets.push_back(new Pocket(WINDOW_WIDTH/2, FIELD_BOTTOM - a));
 
+	//白ボール（プレイヤー）初期設定
 	player = Player(200, 200, GetColor(255, 255, 255));
 	balls.push_back(&player);
 	
-	for (int i = 1; i <= 9; i++){
-		auto ball = new Ball(50*i + 50.0f, 100.0f, GetColor(255, 0, 255));
-		balls.push_back(ball);
-	}
+	//ボール初期設定
+	for (int i = 1; i <= 9; i++)
+		balls.push_back(new Ball(50 * i + 50.0f, 100.0f, GetColor(255, 0, 255)));
 }
 
+
+//任意の四角形を描画
 void DrawSquare(const int position[8], int color){
 	DrawTriangle(position[0], position[1], position[2], position[3], position[4], position[5], color, TRUE);
 	DrawTriangle(position[2], position[3], position[4], position[5], position[6], position[7], color, TRUE);
 }
 
+//ビリヤード盤の描画
 void Game::boardShow(){
 	const int BROWN = GetColor(153, 76, 0);
 	const int DARK_GREEN = GetColor(0, 100, 0);
@@ -97,18 +103,18 @@ void Game::boardShow(){
 	DrawSquare(CUSHION_POSITION[7], GREEN);
 
 	//ポケット描画
-	Pocket pocket;
-	for (unsigned int i = 0; i < pockets.size(); i++){
-		pocket = pockets[i];
-		DrawCircle((int)pocket.getX(), (int)pocket.getY(), pocket.getSize(), BLACK);
+	for (std::vector<Pocket*>::iterator pocket = pockets.begin(); pocket != pockets.end(); pocket++){
+		DrawCircle((int)(*pocket)->getX(), (int)(*pocket)->getY(), (*pocket)->getSize(), BLACK);
 	}
 }
 
+//ボールの描画
 void Game::ballShow(){
 	for (std::vector<Ball*>::iterator ball = balls.begin(); ball != balls.end(); ball++)
 		DrawCircle((*ball)->getXi(), (*ball)->getYi(), (*ball)->getSize(), (*ball)->getColor());
 }
 
+//衝突判定を含めたボールの移動処理を行う。
 void Game::update(){
 	Vector2d sigmentIJ, iV, jV;
 	float dotI, dotJ;
@@ -128,18 +134,22 @@ void Game::update(){
 	}
 }
 
+//クリックした方向へ白ボールを打つ。白ボールの速さは白ボールとクリック座標との距離で決定する。
 void Game::clickCheck(bool* ballsMoving){
-	int x, y;
+	int x, y, speedSize;
 	Vector2d direction;
 	if (GetMouseInput() & MOUSE_INPUT_LEFT){
 		GetMousePoint(&x, &y);
 		direction = Vector2d((float)x, (float)y) - player.getT();
+		speedSize = direction.norm() / 5;
+		if (speedSize >= 15) speedSize = 15;
 		direction.normalize();
-		player.setV(10 * direction);
+		player.setV(speedSize * direction);
 		*ballsMoving = true;
 	}
 }
 
+//ボールが一つでも動いていればtrue,すべて動いていなければfalseを返す
 bool Game::ballsMovingCheck(){
 	for (std::vector<Ball*>::iterator ball = balls.begin(); ball != balls.end(); ball++){
 		if ((*ball)->movingCheck() == true)
