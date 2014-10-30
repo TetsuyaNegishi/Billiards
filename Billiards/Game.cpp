@@ -114,6 +114,15 @@ void Game::ballShow(){
 		DrawCircle((*ball)->getXi(), (*ball)->getYi(), (*ball)->getSize(), (*ball)->getColor());
 }
 
+void Game::pocketCheck(Ball* ball){
+	for (std::vector<Pocket*>::iterator pocket = pockets.begin(); pocket != pockets.end(); pocket++){
+		if (((*ball).getT() - (*pocket)->getT()).norm2() < pow((*pocket)->getSize(), 2)){
+			//balls.erase(ball);
+			return;
+		}
+	}
+}
+
 //衝突判定を含めたボールの移動処理を行う。
 void Game::update(){
 	Vector2d sigmentIJ, iV, jV;
@@ -136,7 +145,8 @@ void Game::update(){
 
 //クリックした方向へ白ボールを打つ。白ボールの速さは白ボールとクリック座標との距離で決定する。
 void Game::clickCheck(bool* ballsMoving){
-	int x, y, speedSize;
+	int x, y;
+	float speedSize;
 	Vector2d direction;
 	if (GetMouseInput() & MOUSE_INPUT_LEFT){
 		GetMousePoint(&x, &y);

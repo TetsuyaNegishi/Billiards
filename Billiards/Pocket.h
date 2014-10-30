@@ -14,4 +14,5 @@ public:
 	int getSize();
 	float getX();
 	float getY();
+	Vector2d getT();
 };

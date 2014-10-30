@@ -7,7 +7,7 @@ Pocket::Pocket(){
 }
 
 Pocket::Pocket(int x, int y){
-	t = Vector2d(x,y);
+	t = Vector2d((float)x, (float)y);
 }
 
 int Pocket::getSize(){
@@ -20,4 +20,8 @@ float Pocket::getX(){
 
 float Pocket::getY(){
 	return t.y;
+}
+
+Vector2d Pocket::getT(){
+	return t;
 }
