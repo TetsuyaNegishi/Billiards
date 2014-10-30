@@ -15,7 +15,7 @@ private:
 	void update();
 	void clickCheck(bool* ballsMoving);
 	bool ballsMovingCheck();
-	void pocketCheck(Ball* ball);
+	bool pocketInCheck(Ball* ball);
 
 
 public:

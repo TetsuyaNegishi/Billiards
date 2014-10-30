@@ -114,13 +114,14 @@ void Game::ballShow(){
 		DrawCircle((*ball)->getXi(), (*ball)->getYi(), (*ball)->getSize(), (*ball)->getColor());
 }
 
-void Game::pocketCheck(Ball* ball){
+bool Game::pocketInCheck(Ball* ball){
 	for (std::vector<Pocket*>::iterator pocket = pockets.begin(); pocket != pockets.end(); pocket++){
 		if (((*ball).getT() - (*pocket)->getT()).norm2() < pow((*pocket)->getSize(), 2)){
 			//balls.erase(ball);
-			return;
+			return true;
 		}
 	}
+	return false;
 }
 
 //衝突判定を含めたボールの移動処理を行う。
@@ -128,6 +129,12 @@ void Game::update(){
 	Vector2d sigmentIJ, iV, jV;
 	float dotI, dotJ;
 	for (unsigned int i = 0; i < balls.size(); i++){
+		if (pocketInCheck(balls[i]) == true){
+			//if (balls[i] == player)
+			balls.erase(balls.begin() + i);
+			i--;
+			continue;
+		}
 		balls[i]->move();
 		for (unsigned int j = i+1; j < balls.size(); j++){
 			if ((balls[i]->getT() - balls[j]->getT()).norm2() < pow(balls[i]->getSize() + balls[j]->getSize(), 2)){

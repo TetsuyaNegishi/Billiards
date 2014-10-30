@@ -88,7 +88,7 @@ void Ball::move(){
 		v.y *= -1;
 	t += v;
 
-	if ((FRICTON_FORCE_SIZE*v).norm() < pow(10, -2))
+	if ((FRICTON_FORCE_SIZE*v).norm() < pow(10, -1))
 		v = Vector2d(0, 0);
 	else
 		v = FRICTON_FORCE_SIZE*v;
