@@ -41,7 +41,7 @@ public:
 	static const int CUSHION_RIGHT;
 	static const int CUSHION_TOP;
 	static const int CUSHION_BOTTOM;
-	static const int CUSHION_POSITION[][8];
+	static const Vector2d CUSHION_POSITION[][4];
 
 	Game();
 	void init();

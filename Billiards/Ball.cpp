@@ -3,7 +3,7 @@
 #include<math.h>
 
 const int Ball::SIZE = 15;
-const float Ball::FRICTON_FORCE_SIZE = 0.995;
+const float Ball::FRICTON_FORCE_SIZE = 0.995f;
 
 Ball::Ball(){
 	v = Vector2d(0, 0);
@@ -82,10 +82,20 @@ bool Ball::movingCheck(){
 
 void Ball::move(){
 	Vector2d check = t + v;
-	if (Game::CUSHION_LEFT > (check.x - SIZE) || Game::CUSHION_RIGHT < (check.x + SIZE))
-		v.x *= -1;
-	if (Game::CUSHION_TOP >(check.y - SIZE) || Game::CUSHION_BOTTOM < (check.y + SIZE))
+	if (Game::CUSHION_TOP > (check.y - SIZE)){
+		//if (Game::CUSHION_POSITION[2][])
 		v.y *= -1;
+	}
+	else if (Game::CUSHION_BOTTOM < (check.y + SIZE)){
+		v.y *= -1;
+	}
+	else if (Game::CUSHION_LEFT > (check.x - SIZE)){
+		v.x *= -1;
+	}
+	else if (Game::CUSHION_RIGHT < (check.x + SIZE)){
+		v.x *= -1;
+	}
+	else {}
 	t += v;
 
 	if ((FRICTON_FORCE_SIZE*v).norm() < pow(10, -1))
