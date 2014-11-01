@@ -3,7 +3,7 @@
 #include<math.h>
 
 const int Ball::SIZE = 15;
-const float Ball::FRICTON_FORCE_SIZE = 0.995f;
+const float Ball::FRICTON_FORCE_SIZE = 0.99f;
 
 Ball::Ball(){
 	v = Vector2d(0, 0);
@@ -80,25 +80,100 @@ bool Ball::movingCheck(){
 		return true;
 }
 
+bool wallCollisionCheck(Ball* ball, Vector2d wallPosition1, Vector2d wallPosition2){
+	Vector2d wallVector, t, v;
+	float crossProduct;
+	t = ball->getT();
+	v = ball->getV();
+	wallVector = (wallPosition1 - wallPosition2).getNormalizeVector();
+	crossProduct = Cross(wallVector, t + v - wallPosition1);//t+víçà”
+	if (fabs(crossProduct) < ball->getSize()){
+		(*ball).setV(v - 2 * (NormalVectorLeft(wallVector)*v) * NormalVectorLeft(wallVector));
+		return true;
+	}
+	return false;
+}
+
 void Ball::move(){
 	Vector2d check = t + v;
+	Vector2d wallPosition[2],wallVector;
+	float crossProduct;
+	
+	//è„ÉNÉbÉVÉáÉìè’ìÀîªíË
 	if (Game::CUSHION_TOP > (check.y - SIZE)){
-		//if (Game::CUSHION_POSITION[2][])
-		v.y *= -1;
+		//ç∂äpîªíË
+		if (Game::CUSHION_POSITION[2][1].x > getX()){
+			if (wallCollisionCheck(this, Game::CUSHION_POSITION[2][0], Game::CUSHION_POSITION[2][1]))
+				return;
+		}
+		//íÜâõäpîªíË
+		else if (Game::CUSHION_POSITION[2][3].x < t.x && Game::CUSHION_POSITION[3][3].x > t.x){
+			if (wallCollisionCheck(this, Game::CUSHION_POSITION[2][2], Game::CUSHION_POSITION[2][3]))
+				return;
+			if (wallCollisionCheck(this, Game::CUSHION_POSITION[3][2], Game::CUSHION_POSITION[3][3]))
+				return;			
+		}
+		//âEäpîªíË
+		else if (Game::CUSHION_POSITION[3][1].x < getX()){
+			if (wallCollisionCheck(this, Game::CUSHION_POSITION[3][0], Game::CUSHION_POSITION[3][1]))
+				return;
+		}
+		else{ v.y *= -1; }
 	}
+	//â∫ÉNÉbÉVÉáÉìîªíË
 	else if (Game::CUSHION_BOTTOM < (check.y + SIZE)){
-		v.y *= -1;
+		//ç∂äpîªíË
+		if (Game::CUSHION_POSITION[4][1].x > getX()){
+			if (wallCollisionCheck(this, Game::CUSHION_POSITION[4][0], Game::CUSHION_POSITION[4][1]))
+				return;
+		}
+		//íÜâõäpîªíË
+		else if (Game::CUSHION_POSITION[4][3].x < t.x && Game::CUSHION_POSITION[5][3].x > t.x){
+			if (wallCollisionCheck(this, Game::CUSHION_POSITION[4][2], Game::CUSHION_POSITION[4][3]))
+				return;
+			if (wallCollisionCheck(this, Game::CUSHION_POSITION[5][2], Game::CUSHION_POSITION[5][3]))
+				return;
+		}
+		//âEäpîªíË
+		else if (Game::CUSHION_POSITION[5][1].x < getX()){
+			if (wallCollisionCheck(this, Game::CUSHION_POSITION[5][0], Game::CUSHION_POSITION[5][1]))
+				return;
+		}
+		else{ v.y *= -1; }
 	}
+	//ç∂ÉNÉbÉVÉáÉìîªíË
 	else if (Game::CUSHION_LEFT > (check.x - SIZE)){
-		v.x *= -1;
+		//è„äpîªíË
+		if (Game::CUSHION_POSITION[0][1].y > getY()){
+			if (wallCollisionCheck(this, Game::CUSHION_POSITION[0][0], Game::CUSHION_POSITION[0][1]))
+				return;
+		}
+		//â∫äpîªíË
+		else if (Game::CUSHION_POSITION[0][3].y < getY()){
+			if (wallCollisionCheck(this, Game::CUSHION_POSITION[0][2], Game::CUSHION_POSITION[0][3]))
+				return;
+		}
+		else{ v.x *= -1; }
 	}
+	//âEÉNÉbÉVÉáÉìîªíË
 	else if (Game::CUSHION_RIGHT < (check.x + SIZE)){
-		v.x *= -1;
+		//è„äpîªíË
+		if (Game::CUSHION_POSITION[1][1].y > getY()){
+			if (wallCollisionCheck(this, Game::CUSHION_POSITION[1][0], Game::CUSHION_POSITION[1][1]))
+				return;
+		}
+		//â∫äpîªíË
+		else if (Game::CUSHION_POSITION[1][3].y < getY()){
+			if (wallCollisionCheck(this, Game::CUSHION_POSITION[1][2], Game::CUSHION_POSITION[1][3]))
+				return;
+		}
+		else{ v.x *= -1; }
 	}
 	else {}
+
 	t += v;
 
-	if ((FRICTON_FORCE_SIZE*v).norm() < pow(10, -1))
+	if ((FRICTON_FORCE_SIZE*v).norm() < 0.2)
 		v = Vector2d(0, 0);
 	else
 		v = FRICTON_FORCE_SIZE*v;

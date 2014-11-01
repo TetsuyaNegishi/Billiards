@@ -29,3 +29,6 @@ float operator*(const Vector2d& u, const Vector2d& v);
 Vector2d operator*(const Vector2d& v, float k);
 Vector2d operator*(float k, const Vector2d& v);
 Vector2d operator/(const Vector2d& v, float k);
+
+float Cross(Vector2d v1, Vector2d v2);
+Vector2d NormalVectorLeft(Vector2d v);

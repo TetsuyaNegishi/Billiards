@@ -95,3 +95,11 @@ Vector2d operator/(const Vector2d& v, float k){	//vector/scalar
 	w.y = v.y / k;
 	return w;
 }
+
+float Cross(Vector2d v1, Vector2d v2){
+	return v1.x*v2.y - v1.y*v2.x;
+}
+
+Vector2d NormalVectorLeft(Vector2d v){
+	return Vector2d(-v.y, v.x);
+}

@@ -22,7 +22,7 @@ const int Game::FIELD_TOP = BOARD_TOP + FIELD_VALUE;
 const int Game::FIELD_BOTTOM = BOARD_BOTTOM - FIELD_VALUE;
 
 //クッション座標指定
-static const int CUSHION_VALUE = 15;
+static const int CUSHION_VALUE = 20;
 const int Game::CUSHION_LEFT = FIELD_LEFT + CUSHION_VALUE;
 const int Game::CUSHION_RIGHT = FIELD_RIGHT - CUSHION_VALUE;
 const int Game::CUSHION_TOP = FIELD_TOP + CUSHION_VALUE;
@@ -66,12 +66,12 @@ void Game::init(){
 	pockets.push_back(new Pocket(WINDOW_WIDTH/2, FIELD_BOTTOM - a));
 
 	//白ボール（プレイヤー）初期設定
-	player = Player(200, 200, GetColor(255, 255, 255));
+	player = Player(WINDOW_WIDTH/2, 200, GetColor(255, 255, 255));
 	balls.push_back(&player);
 	
 	//ボール初期設定
-	for (int i = 1; i <= 9; i++)
-		balls.push_back(new Ball(50 * i + 50.0f, 100.0f, GetColor(255, 0, 255)));
+	//for (int i = 1; i <= 9; i++)
+	//	balls.push_back(new Ball(50 * i + 50.0f, 100.0f, GetColor(255, 0, 255)));
 }
 
 
@@ -129,6 +129,7 @@ void Game::update(){
 	Vector2d sigmentIJ, iV, jV;
 	float dotI, dotJ;
 	for (unsigned int i = 0; i < balls.size(); i++){
+		/*
 		if (pocketInCheck(balls[i]) == true){
 			if (balls[i] == &player)
 				player.setY(300);
@@ -137,6 +138,7 @@ void Game::update(){
 			i--;
 			continue;
 		}
+		*/
 		balls[i]->move();
 		for (unsigned int j = i+1; j < balls.size(); j++){
 			if ((balls[i]->getT() - balls[j]->getT()).norm2() < pow(balls[i]->getSize() + balls[j]->getSize(), 2)){
@@ -161,7 +163,7 @@ void Game::clickCheck(bool* ballsMoving){
 		GetMousePoint(&x, &y);
 		direction = Vector2d((float)x, (float)y) - player.getT();
 		speedSize = direction.norm() / 5;
-		if (speedSize >= 15) speedSize = 15;
+		if (speedSize >= 20) speedSize = 20;
 		direction.normalize();
 		player.setV(speedSize * direction);
 		*ballsMoving = true;
