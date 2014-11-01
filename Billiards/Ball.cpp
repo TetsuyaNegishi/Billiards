@@ -1,6 +1,7 @@
 #include"Ball.h"
 #include"Game.h"
 #include<math.h>
+#include<DxLib.h>
 
 const int Ball::SIZE = 15;
 const float Ball::FRICTON_FORCE_SIZE = 0.99f;
@@ -141,8 +142,10 @@ void Ball::move(){
 		}
 		else{ v.y *= -1; }
 	}
+	else{}
+
 	//¶ƒNƒbƒVƒ‡ƒ“”»’è
-	else if (Game::CUSHION_LEFT > (check.x - SIZE)){
+	if (Game::CUSHION_LEFT > (check.x - SIZE)){
 		//ãŠp”»’è
 		if (Game::CUSHION_POSITION[0][1].y > getY()){
 			if (wallCollisionCheck(this, Game::CUSHION_POSITION[0][0], Game::CUSHION_POSITION[0][1]))
@@ -178,4 +181,8 @@ void Ball::move(){
 	else
 		v = FRICTON_FORCE_SIZE*v;
 
+}
+
+void Ball::display(){
+	DrawCircle(this->getXi(), this->getYi(), this->getSize(), this->getColor());
 }

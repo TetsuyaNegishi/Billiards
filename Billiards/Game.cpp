@@ -66,12 +66,13 @@ void Game::init(){
 	pockets.push_back(new Pocket(WINDOW_WIDTH/2, FIELD_BOTTOM - a));
 
 	//白ボール（プレイヤー）初期設定
-	player = Player(WINDOW_WIDTH/2, 200, GetColor(255, 255, 255));
+	player = Player(100, (BOARD_BOTTOM-BOARD_TOP)/2 + BOARD_TOP, GetColor(255, 255, 255));
 	balls.push_back(&player);
-	
+	playerExist = true;
+
 	//ボール初期設定
-	//for (int i = 1; i <= 9; i++)
-	//	balls.push_back(new Ball(50 * i + 50.0f, 100.0f, GetColor(255, 0, 255)));
+	for (int i = 1; i <= 9; i++)
+		balls.push_back(new Ball(50 * i + 50.0f, 100.0f, GetColor(255, 0, 255)));
 }
 
 
@@ -111,13 +112,12 @@ void Game::boardShow(){
 //ボールの描画
 void Game::ballShow(){
 	for (std::vector<Ball*>::iterator ball = balls.begin(); ball != balls.end(); ball++)
-		DrawCircle((*ball)->getXi(), (*ball)->getYi(), (*ball)->getSize(), (*ball)->getColor());
+		(*ball)->display();
 }
 
 bool Game::pocketInCheck(Ball* ball){
 	for (std::vector<Pocket*>::iterator pocket = pockets.begin(); pocket != pockets.end(); pocket++){
 		if (((*ball).getT() - (*pocket)->getT()).norm2() < pow((*pocket)->getSize(), 2)){
-			//balls.erase(ball);
 			return true;
 		}
 	}
@@ -129,19 +129,19 @@ void Game::update(){
 	Vector2d sigmentIJ, iV, jV;
 	float dotI, dotJ;
 	for (unsigned int i = 0; i < balls.size(); i++){
-		/*
+
+		//ポケットにボールが入ったかチェック
 		if (pocketInCheck(balls[i]) == true){
 			if (balls[i] == &player)
-				player.setY(300);
-			else
-				balls.erase(balls.begin() + i);
+				playerExist = false;
+			balls.erase(balls.begin() + i);
 			i--;
 			continue;
 		}
-		*/
-		balls[i]->move();
+
+		//ボール同士の衝突チェック
 		for (unsigned int j = i+1; j < balls.size(); j++){
-			if ((balls[i]->getT() - balls[j]->getT()).norm2() < pow(balls[i]->getSize() + balls[j]->getSize(), 2)){
+			if (((balls[i]->getT()+balls[i]->getV()) - (balls[j]->getT()+balls[j]->getV())).norm2() < pow(balls[i]->getSize() + balls[j]->getSize(), 2)){
 				sigmentIJ= (balls[i]->getT() - balls[j]->getT()).getNormalizeVector();
 				dotI = (balls[j]->getV() - balls[i]->getV()) * sigmentIJ;
 				dotJ = (balls[i]->getV() - balls[j]->getV()) * sigmentIJ;
@@ -151,6 +151,8 @@ void Game::update(){
 				balls[j]->setV(jV);
 			}
 		}
+
+		balls[i]->move();
 	}
 }
 
@@ -179,8 +181,28 @@ bool Game::ballsMovingCheck(){
 	return false;
 }
 
+void Game::playerSet(bool* prevMouseInput){
+	int x, y;
+	if (GetMouseInput() & MOUSE_INPUT_LEFT){
+		if (!(*prevMouseInput))
+			*prevMouseInput = true;
+	}
+	if (!(GetMouseInput() & MOUSE_INPUT_LEFT)){
+		if (*prevMouseInput){
+			*prevMouseInput = false;
+			balls.push_back(&player);
+			playerExist = true;
+		}
+	}
+	GetMousePoint(&x, &y);
+	player.setT(Vector2d(x, y));
+	player.display();
+}
+
 void Game::main(){
 	bool ballsMoving = false;
+	bool prevMouseInput = false;
+
 	while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0){
 		boardShow();
 		ballShow();
@@ -188,7 +210,10 @@ void Game::main(){
 			update();
 			ballsMoving = ballsMovingCheck();
 		}else{
-			clickCheck(&ballsMoving);
+			if (!playerExist)
+				playerSet(&prevMouseInput);
+			else
+				clickCheck(&ballsMoving);
 		}
 	}
 }

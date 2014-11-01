@@ -8,6 +8,7 @@
 class Game{
 private:
 	Player player;
+	bool playerExist;
 	std::vector<Pocket*> pockets;
 	std::vector<Ball*> balls;
 	void boardShow();
@@ -16,6 +17,8 @@ private:
 	void clickCheck(bool* ballsMoving);
 	bool ballsMovingCheck();
 	bool pocketInCheck(Ball* ball);
+	void playerSet(bool* prevMouseInput);
+
 
 
 public:
