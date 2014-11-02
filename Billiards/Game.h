@@ -9,15 +9,20 @@ class Game{
 private:
 	Player player;
 	bool playerExist;
+
+	int startTime;
+
 	std::vector<Pocket*> pockets;
 	std::vector<Ball*> balls;
 	void boardShow();
 	void ballShow();
+	void timeShow();
 	void update();
 	void clickCheck(bool* ballsMoving);
 	bool ballsMovingCheck();
 	bool pocketInCheck(Ball* ball);
 	void playerSet(bool* prevMouseInput);
+
 
 
 

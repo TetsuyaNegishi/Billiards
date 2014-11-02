@@ -65,6 +65,10 @@ void Game::init(){
 	pockets.push_back(new Pocket(WINDOW_WIDTH/2, FIELD_TOP + a));
 	pockets.push_back(new Pocket(WINDOW_WIDTH/2, FIELD_BOTTOM - a));
 
+	//startTime設定
+	startTime = GetNowCount();
+	SetFontSize(20);
+
 	//白ボール（プレイヤー）初期設定
 	player = Player(100, (BOARD_BOTTOM-BOARD_TOP)/2 + BOARD_TOP, GetColor(255, 255, 255));
 	balls.push_back(&player);
@@ -115,6 +119,12 @@ void Game::ballShow(){
 		(*ball)->display();
 }
 
+//タイムの描画
+void Game::timeShow(){
+	DrawFormatString(20, BOARD_BOTTOM + 10, GetColor(0, 0, 0), "%d秒", (GetNowCount() - startTime) / 1000);
+}
+
+//引数のボールがポケットに入ったかどうか判定する。
 bool Game::pocketInCheck(Ball* ball){
 	for (std::vector<Pocket*>::iterator pocket = pockets.begin(); pocket != pockets.end(); pocket++){
 		if (((*ball).getT() - (*pocket)->getT()).norm2() < pow((*pocket)->getSize(), 2)){
@@ -124,7 +134,8 @@ bool Game::pocketInCheck(Ball* ball){
 	return false;
 }
 
-//衝突判定を含めたボールの移動処理を行う。
+
+//ボール同士の衝突判定を含めたボールの移動処理を行う。
 void Game::update(){
 	Vector2d sigmentIJ, iV, jV;
 	float dotI, dotJ;
@@ -181,6 +192,10 @@ bool Game::ballsMovingCheck(){
 	return false;
 }
 
+
+//白ボールがポケットに入ってしまった場合の処理
+//マウスカーソルに白ボールがついてくる
+//マウスをクリックして離した位置に白ボールを配置する。
 void Game::playerSet(bool* prevMouseInput){
 	int x, y;
 	if (GetMouseInput() & MOUSE_INPUT_LEFT){
@@ -196,9 +211,13 @@ void Game::playerSet(bool* prevMouseInput){
 	}
 	GetMousePoint(&x, &y);
 	player.setT(Vector2d(x, y));
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 	player.display();
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
+
+//メイン関数
 void Game::main(){
 	bool ballsMoving = false;
 	bool prevMouseInput = false;
@@ -206,12 +225,13 @@ void Game::main(){
 	while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0){
 		boardShow();
 		ballShow();
+		timeShow();
 		if (ballsMoving == true){
 			update();
 			ballsMoving = ballsMovingCheck();
 		}else{
 			if (!playerExist)
-				playerSet(&prevMouseInput);
+				playerSet(&prevMouseInput); //白ボールがポケットに入った時
 			else
 				clickCheck(&ballsMoving);
 		}
