@@ -125,12 +125,12 @@ void OnePlayGame::BallShow(){
 
 //タイムの描画
 void OnePlayGame::TimeShow(){
-	DrawFormatString(20, BOARD_BOTTOM + 10, GetColor(0, 0, 0), "%d秒", (GetNowCount() - mStartTime) / 1000);
+	DrawFormatString(20, BOARD_BOTTOM + 10, GetColor(255, 255, 255), "%d秒", (GetNowCount() - mStartTime) / 1000);
 }
 
 //打数の描画
 void OnePlayGame::NumShotShow(){
-	DrawFormatString(20, BOARD_BOTTOM + 10, GetColor(0, 0, 0), "打数：%d", mNumShot);
+	DrawFormatString(20, BOARD_BOTTOM + 10, GetColor(255, 255, 255), "打数：%d", mNumShot);
 }
 
 //ボール・タイム・打数の描画
@@ -204,6 +204,7 @@ void OnePlayGame::BallsMove(){
 //白ボールがポケットに入った後の白ボールを置く処理
 void OnePlayGame::PlayerSet(int x, int y){
 	mPlayer->setT(Vector2d(x, y));
+	mPlayer->setV(Vector2d(0, 0));
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 	mPlayer->display();
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
