@@ -98,7 +98,6 @@ bool wallCollisionCheck(Ball* ball, Vector2d wallPosition1, Vector2d wallPositio
 void Ball::move(){
 	Vector2d check = t + v;
 	Vector2d wallPosition[2],wallVector;
-	float crossProduct;
 	
 	//ãƒNƒbƒVƒ‡ƒ“Õ“Ë”»’è
 	if (Game::CUSHION_TOP > (check.y - SIZE)){

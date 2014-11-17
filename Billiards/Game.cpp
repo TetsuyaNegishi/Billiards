@@ -67,16 +67,21 @@ void Game::init(){
 
 	//startTime設定
 	startTime = GetNowCount();
-	SetFontSize(20);
+	SetFontSize(40);
+
+	//numShot設定
+	numShot = 0;
 
 	//白ボール（プレイヤー）初期設定
-	player = Player(100, (BOARD_BOTTOM-BOARD_TOP)/2 + BOARD_TOP, GetColor(255, 255, 255));
-	balls.push_back(&player);
+	*player = Player(100, (BOARD_BOTTOM-BOARD_TOP)/2 + BOARD_TOP, GetColor(255, 255, 255));
+	balls.push_back(player);
 	playerExist = true;
 
 	//ボール初期設定
-	for (int i = 1; i <= 9; i++)
+	numColorBall = 1;
+	for (int i = 1; i <= numColorBall; i++)
 		balls.push_back(new Ball(50 * i + 50.0f, 100.0f, GetColor(255, 0, 255)));
+	numShot = 0;
 }
 
 
@@ -124,6 +129,23 @@ void Game::timeShow(){
 	DrawFormatString(20, BOARD_BOTTOM + 10, GetColor(0, 0, 0), "%d秒", (GetNowCount() - startTime) / 1000);
 }
 
+//打数の描画
+void Game::numShotShow(){
+	DrawFormatString(20, BOARD_BOTTOM + 10, GetColor(0, 0, 0), "打数：%d", numShot);
+}
+
+//クリア画面
+void Game::clearScreen(bool* gamePlaying){
+	DrawFormatString(10, 10, GetColor(0, 0, 0), "ゲームクリア");
+	DrawFormatString(10, 50, GetColor(0, 0, 0), "打数：%d", numShot);
+	DrawFormatString(10, 100, GetColor(0, 0, 0), "[SPACE KEY]：リプレイ");
+	if (CheckHitKey(KEY_INPUT_SPACE) == 1){
+		init();
+		*gamePlaying = true;
+		player = 0;
+	}
+}
+
 //引数のボールがポケットに入ったかどうか判定する。
 bool Game::pocketInCheck(Ball* ball){
 	for (std::vector<Pocket*>::iterator pocket = pockets.begin(); pocket != pockets.end(); pocket++){
@@ -143,8 +165,14 @@ void Game::update(){
 
 		//ポケットにボールが入ったかチェック
 		if (pocketInCheck(balls[i]) == true){
-			if (balls[i] == &player)
+			//白ボールがポケットに入ったかチェック
+			//白ボールがポケットに入ったらnumShotを＋３
+			if (balls[i] == player){
 				playerExist = false;
+				numShot = numShot + 3;
+			}
+			else
+				numColorBall--;
 			balls.erase(balls.begin() + i);
 			i--;
 			continue;
@@ -174,12 +202,13 @@ void Game::clickCheck(bool* ballsMoving){
 	Vector2d direction;
 	if (GetMouseInput() & MOUSE_INPUT_LEFT){
 		GetMousePoint(&x, &y);
-		direction = Vector2d((float)x, (float)y) - player.getT();
+		direction = Vector2d((float)x, (float)y) - player->getT();
 		speedSize = direction.norm() / 5;
 		if (speedSize >= 20) speedSize = 20;
 		direction.normalize();
-		player.setV(speedSize * direction);
+		player->setV(speedSize * direction);
 		*ballsMoving = true;
+		numShot++;
 	}
 }
 
@@ -205,36 +234,49 @@ void Game::playerSet(bool* prevMouseInput){
 	if (!(GetMouseInput() & MOUSE_INPUT_LEFT)){
 		if (*prevMouseInput){
 			*prevMouseInput = false;
-			balls.push_back(&player);
+			balls.push_back(player);
 			playerExist = true;
 		}
 	}
 	GetMousePoint(&x, &y);
-	player.setT(Vector2d(x, y));
+	player->setT(Vector2d(x, y));
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-	player.display();
+	player->display();
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
+void Game::gamePlayingCheck(bool* gamePlaying){
+	if (numColorBall == 0)
+		*gamePlaying = false;
+}
 
 //メイン関数
 void Game::main(){
 	bool ballsMoving = false;
 	bool prevMouseInput = false;
+	bool gamePlaying = true;
 
 	while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0){
-		boardShow();
-		ballShow();
-		timeShow();
-		if (ballsMoving == true){
-			update();
-			ballsMoving = ballsMovingCheck();
-		}else{
-			if (!playerExist)
-				playerSet(&prevMouseInput); //白ボールがポケットに入った時
-			else
-				clickCheck(&ballsMoving);
+		if (gamePlaying){
+			boardShow();
+			ballShow();
+			numShotShow();
+			if (ballsMoving == true){
+				update();
+				ballsMoving = ballsMovingCheck();
+			}
+			else{
+				if (!playerExist)
+					playerSet(&prevMouseInput); //白ボールがポケットに入った時
+				else
+					clickCheck(&ballsMoving);
+			}
+			gamePlayingCheck(&gamePlaying);
 		}
+		else{
+			clearScreen(&gamePlaying);
+		}
+			
 	}
 }
 

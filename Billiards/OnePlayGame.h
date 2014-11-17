@@ -4,29 +4,26 @@
 #include<vector>
 #include"Pocket.h"
 #include"Player.h"
+#include"SceneMainLoopChild.h"
 
-class Game{
+class OnePlayGame : public SceneMainLoopChild{
 private:
-	Player *player;
-	bool playerExist;
+	Player* mPlayer;
+	bool mPlayerExist;
 
-	int startTime;
-	int numShot;
-	int numColorBall;
+	int mStartTime;
+	int mNumShot;
+	int mNumColorBall;
 
-	std::vector<Pocket*> pockets;
-	std::vector<Ball*> balls;
-	void boardShow();
-	void ballShow();
-	void timeShow();
-	void numShotShow();
-	void update();
-	void clickCheck(bool* ballsMoving);
-	bool ballsMovingCheck();
-	bool pocketInCheck(Ball* ball);
-	void playerSet(bool* prevMouseInput);
-	void gamePlayingCheck(bool* gamePlaying);
-	void clearScreen(bool* gamePlaying);
+	std::vector<Pocket*> mPockets;
+	std::vector<Ball*> mBalls;
+	void BoardShow();
+	void BallShow();
+	void TimeShow();
+	void NumShotShow();
+	void DrawSquare(const Vector2d position[4], int color);
+	bool PocketInCheck(Ball* ball);
+
 
 public:
 	//ウィンドウサイズ指定
@@ -53,8 +50,25 @@ public:
 	static const int CUSHION_BOTTOM;
 	static const Vector2d CUSHION_POSITION[][4];
 
-	Game();
-	void init();
-	void main();
-	void end();
+	void Display();
+	
+	bool BallsMovingCheck();
+	void BallsMove();
+	void PlayerSet(int x, int y);
+	bool GetPlayerExist();
+	void PutPlayer();
+	void NumShotPlaPla();
+	Player* GetPlayer();
+
+	//void init();
+	//void main();
+	//void end();
+	
+
+	//シーケンス処理用
+private:
+	Scene* mChild;
+public:
+	OnePlayGame();
+	virtual Scene* Update() override;
 };
