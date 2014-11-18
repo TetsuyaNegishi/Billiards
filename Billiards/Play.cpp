@@ -7,6 +7,7 @@ Play::Play(OnePlayGame* parent){
 	mPrevMouseInput = false;
 }
 
+//白ボールがポケットに落ちた時、白ボールを再度置き直す
 void Play::PutPlayer(){
 	int x, y;
 	if (GetMouseInput() & MOUSE_INPUT_LEFT){
@@ -22,6 +23,7 @@ void Play::PutPlayer(){
 	mParent->PlayerSet(x, y);
 }
 
+//白ボールを打つメソッド
 void Play::ShotPlayer(){
 	int x, y;
 	float speedSize;

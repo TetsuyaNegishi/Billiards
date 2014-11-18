@@ -70,15 +70,24 @@ OnePlayGame::OnePlayGame(){
 	//numShot設定
 	mNumShot = 0;
 
+	//ボール初期設定
+	const int Red = GetColor(255, 0, 0);
+	const Vector2d Center = Vector2d(MainLoop::WINDOW_WIDTH / 2, (BOARD_BOTTOM - BOARD_TOP) / 2 + BOARD_TOP);
+	mBalls.push_back(new Ball(Center.x + 150, Center.y, Red));
+	mBalls.push_back(new Ball(Center.x + 175, Center.y + 25, Red));
+	mBalls.push_back(new Ball(Center.x + 175, Center.y - 25, Red));
+	mBalls.push_back(new Ball(Center.x + 200, Center.y, Red));
+	mBalls.push_back(new Ball(Center.x + 200, Center.y + 50, Red));
+	mBalls.push_back(new Ball(Center.x + 200, Center.y - 50, Red));
+	mBalls.push_back(new Ball(Center.x + 225, Center.y + 25, Red));
+	mBalls.push_back(new Ball(Center.x + 225, Center.y - 25, Red));
+	mBalls.push_back(new Ball(Center.x + 250, Center.y, Red));
+	mNumColorBall = mBalls.size();
+
 	//白ボール（プレイヤー）初期設定
-	mPlayer = new Player(100, (BOARD_BOTTOM - BOARD_TOP) / 2 + BOARD_TOP, GetColor(255, 255, 255));
+	mPlayer = new Player(200, (BOARD_BOTTOM - BOARD_TOP) / 2 + BOARD_TOP, GetColor(255, 255, 255));
 	mBalls.push_back(mPlayer);
 	mPlayerExist = true;
-
-	//ボール初期設定
-	mNumColorBall = 1;
-	for (int i = 1; i <= mNumColorBall; i++)
-		mBalls.push_back(new Ball(50 * i + 50.0f, 100.0f, GetColor(255, 0, 0)));
 
 	//フォント設定
 	SetFontSize(40);
@@ -215,10 +224,17 @@ bool OnePlayGame::GetPlayerExist(){
 	return mPlayerExist;
 }
 
-//白ボールを置いた時の処理。
+//白ボールを置いた時の処理。クリック時に呼ばれる。
 void OnePlayGame::PutPlayer(){
-	mBalls.push_back(mPlayer);
-	mPlayerExist = true;
+	if (CUSHION_LEFT < mPlayer->getX() - mPlayer->getSize() && mPlayer->getX() + mPlayer->getSize() < CUSHION_RIGHT      
+		&& CUSHION_TOP < mPlayer->getY() - mPlayer->getSize() && mPlayer->getY() + mPlayer->getSize() < CUSHION_BOTTOM){
+		for (std::vector<Ball*>::iterator ball = mBalls.begin(); ball != mBalls.end(); ball++){
+			if ( ((*ball)->getT() - mPlayer->getT()).norm() < (*ball)->getSize() + mPlayer->getSize() )
+				return;
+		}
+		mBalls.push_back(mPlayer);
+		mPlayerExist = true;
+	}
 }
 
 //打数をインクリメント

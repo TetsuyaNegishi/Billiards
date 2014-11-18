@@ -1,5 +1,5 @@
 #include"Ball.h"
-#include"Game.h"
+#include"OnePlayGame.h"
 #include<math.h>
 #include<DxLib.h>
 
@@ -100,78 +100,90 @@ void Ball::move(){
 	Vector2d wallPosition[2],wallVector;
 	
 	//ãƒNƒbƒVƒ‡ƒ“Õ“Ë”»’è
-	if (Game::CUSHION_TOP > (check.y - SIZE)){
+	if (OnePlayGame::CUSHION_TOP > (check.y - SIZE)){
 		//¶Šp”»’è
-		if (Game::CUSHION_POSITION[2][1].x > getX()){
-			if (wallCollisionCheck(this, Game::CUSHION_POSITION[2][0], Game::CUSHION_POSITION[2][1]))
+		if (OnePlayGame::CUSHION_POSITION[2][1].x > getX()){
+			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[2][0], OnePlayGame::CUSHION_POSITION[2][1]))
 				return;
 		}
 		//’†‰›Šp”»’è
-		else if (Game::CUSHION_POSITION[2][3].x < t.x && Game::CUSHION_POSITION[3][3].x > t.x){
-			if (wallCollisionCheck(this, Game::CUSHION_POSITION[2][2], Game::CUSHION_POSITION[2][3]))
+		else if (OnePlayGame::CUSHION_POSITION[2][3].x < t.x && OnePlayGame::CUSHION_POSITION[3][3].x > t.x){
+			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[2][2], OnePlayGame::CUSHION_POSITION[2][3]))
 				return;
-			if (wallCollisionCheck(this, Game::CUSHION_POSITION[3][2], Game::CUSHION_POSITION[3][3]))
+			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[3][2], OnePlayGame::CUSHION_POSITION[3][3]))
 				return;			
 		}
 		//‰EŠp”»’è
-		else if (Game::CUSHION_POSITION[3][1].x < getX()){
-			if (wallCollisionCheck(this, Game::CUSHION_POSITION[3][0], Game::CUSHION_POSITION[3][1]))
+		else if (OnePlayGame::CUSHION_POSITION[3][1].x < getX()){
+			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[3][0], OnePlayGame::CUSHION_POSITION[3][1]))
 				return;
 		}
-		else{ v.y *= -1; }
+		else{ 
+			v.y *= -1; 
+			t.y = OnePlayGame::CUSHION_TOP + SIZE;
+		}
 	}
+
 	//‰ºƒNƒbƒVƒ‡ƒ“”»’è
-	else if (Game::CUSHION_BOTTOM < (check.y + SIZE)){
+	else if (OnePlayGame::CUSHION_BOTTOM < (check.y + SIZE)){
 		//¶Šp”»’è
-		if (Game::CUSHION_POSITION[4][1].x > getX()){
-			if (wallCollisionCheck(this, Game::CUSHION_POSITION[4][0], Game::CUSHION_POSITION[4][1]))
+		if (OnePlayGame::CUSHION_POSITION[4][1].x > getX()){
+			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[4][0], OnePlayGame::CUSHION_POSITION[4][1]))
 				return;
 		}
 		//’†‰›Šp”»’è
-		else if (Game::CUSHION_POSITION[4][3].x < t.x && Game::CUSHION_POSITION[5][3].x > t.x){
-			if (wallCollisionCheck(this, Game::CUSHION_POSITION[4][2], Game::CUSHION_POSITION[4][3]))
+		else if (OnePlayGame::CUSHION_POSITION[4][3].x < t.x && OnePlayGame::CUSHION_POSITION[5][3].x > t.x){
+			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[4][2], OnePlayGame::CUSHION_POSITION[4][3]))
 				return;
-			if (wallCollisionCheck(this, Game::CUSHION_POSITION[5][2], Game::CUSHION_POSITION[5][3]))
+			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[5][2], OnePlayGame::CUSHION_POSITION[5][3]))
 				return;
 		}
 		//‰EŠp”»’è
-		else if (Game::CUSHION_POSITION[5][1].x < getX()){
-			if (wallCollisionCheck(this, Game::CUSHION_POSITION[5][0], Game::CUSHION_POSITION[5][1]))
+		else if (OnePlayGame::CUSHION_POSITION[5][1].x < getX()){
+			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[5][0], OnePlayGame::CUSHION_POSITION[5][1]))
 				return;
 		}
-		else{ v.y *= -1; }
+		else{ 
+			v.y *= -1;
+			t.y = OnePlayGame::CUSHION_BOTTOM - SIZE;
+		}
 	}
-	else{}
 
 	//¶ƒNƒbƒVƒ‡ƒ“”»’è
-	if (Game::CUSHION_LEFT > (check.x - SIZE)){
+	if (OnePlayGame::CUSHION_LEFT > (check.x - SIZE)){
 		//ãŠp”»’è
-		if (Game::CUSHION_POSITION[0][1].y > getY()){
-			if (wallCollisionCheck(this, Game::CUSHION_POSITION[0][0], Game::CUSHION_POSITION[0][1]))
+		if (OnePlayGame::CUSHION_POSITION[0][1].y > getY()){
+			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[0][0], OnePlayGame::CUSHION_POSITION[0][1]))
 				return;
 		}
 		//‰ºŠp”»’è
-		else if (Game::CUSHION_POSITION[0][3].y < getY()){
-			if (wallCollisionCheck(this, Game::CUSHION_POSITION[0][2], Game::CUSHION_POSITION[0][3]))
+		else if (OnePlayGame::CUSHION_POSITION[0][3].y < getY()){
+			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[0][2], OnePlayGame::CUSHION_POSITION[0][3]))
 				return;
 		}
-		else{ v.x *= -1; }
+		else{ 
+			v.x *= -1;
+			t.x = OnePlayGame::CUSHION_LEFT + SIZE;
+		}
 	}
+
 	//‰EƒNƒbƒVƒ‡ƒ“”»’è
-	else if (Game::CUSHION_RIGHT < (check.x + SIZE)){
+	else if (OnePlayGame::CUSHION_RIGHT < (check.x + SIZE)){
 		//ãŠp”»’è
-		if (Game::CUSHION_POSITION[1][1].y > getY()){
-			if (wallCollisionCheck(this, Game::CUSHION_POSITION[1][0], Game::CUSHION_POSITION[1][1]))
+		if (OnePlayGame::CUSHION_POSITION[1][1].y > getY()){
+			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[1][0], OnePlayGame::CUSHION_POSITION[1][1]))
 				return;
 		}
 		//‰ºŠp”»’è
-		else if (Game::CUSHION_POSITION[1][3].y < getY()){
-			if (wallCollisionCheck(this, Game::CUSHION_POSITION[1][2], Game::CUSHION_POSITION[1][3]))
+		else if (OnePlayGame::CUSHION_POSITION[1][3].y < getY()){
+			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[1][2], OnePlayGame::CUSHION_POSITION[1][3]))
 				return;
 		}
-		else{ v.x *= -1; }
+		else{ 
+			v.x *= -1;
+			t.x = OnePlayGame::CUSHION_RIGHT - SIZE;
+		}
 	}
-	else {}
 
 	t += v;
 
