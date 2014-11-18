@@ -3,11 +3,7 @@
 #include "MainLoop.h"
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int){
-	//Game game;
-	//game.init();
-	//game.main();
-	//game.end();
-	SetGraphMode(MainLoop::WINDOW_WIDTH, MainLoop::WINDOW_HEIGHT, 16);
+	SetGraphMode(MainLoop::WINDOW_WIDTH, MainLoop::WINDOW_HEIGHT, 16), SetBackgroundColor(0, 50, 0);
 	ChangeWindowMode(TRUE), DxLib_Init(), SetDrawScreen(DX_SCREEN_BACK); //ウィンドウモード変更と初期化と裏画面設定
 
 	MainLoop mainLoop;

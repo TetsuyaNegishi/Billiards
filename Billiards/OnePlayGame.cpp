@@ -64,9 +64,6 @@ OnePlayGame::OnePlayGame(){
 	mPockets.push_back(new Pocket(WINDOW_WIDTH / 2, FIELD_TOP + a));
 	mPockets.push_back(new Pocket(WINDOW_WIDTH / 2, FIELD_BOTTOM - a));
 
-	//startTime設定
-	mStartTime = GetNowCount();
-
 	//numShot設定
 	mNumShot = 0;
 
@@ -132,11 +129,6 @@ void OnePlayGame::BallShow(){
 		(*ball)->display();
 }
 
-//タイムの描画
-void OnePlayGame::TimeShow(){
-	DrawFormatString(20, BOARD_BOTTOM + 10, GetColor(255, 255, 255), "%d秒", (GetNowCount() - mStartTime) / 1000);
-}
-
 //打数の描画
 void OnePlayGame::NumShotShow(){
 	DrawFormatString(20, BOARD_BOTTOM + 10, GetColor(255, 255, 255), "打数：%d", mNumShot);
@@ -168,6 +160,112 @@ bool OnePlayGame::PocketInCheck(Ball* ball){
 	return false;
 }
 
+//wallPositionを結んだ線上にballがあれば反発処理をし、trueを返す
+bool OnePlayGame::wallCollisionCheck(Ball* ball, Vector2d wallPosition1, Vector2d wallPosition2){
+	Vector2d wallVector, t, v;
+	float crossProduct;
+	t = ball->getT();
+	v = ball->getV();
+	wallVector = (wallPosition1 - wallPosition2).getNormalizeVector();
+	crossProduct = Cross(wallVector, t + v - wallPosition1);//t+v注意
+	if (fabs(crossProduct) < ball->getSize()){
+		(*ball).setV(v - 2 * (NormalVectorLeft(wallVector)*v) * NormalVectorLeft(wallVector));
+		return true;
+	}
+	return false;
+}
+
+//クッションとの衝突処理
+void OnePlayGame::CushionCollision(Ball* ball){
+	Vector2d check = ball->getT();
+
+	//上クッション衝突判定
+	if (OnePlayGame::CUSHION_TOP > (check.y - ball->getSize())){
+		//左角判定
+		if (OnePlayGame::CUSHION_POSITION[2][1].x > ball->getX()){
+			if (wallCollisionCheck(ball, OnePlayGame::CUSHION_POSITION[2][0], OnePlayGame::CUSHION_POSITION[2][1]))
+				return;
+		}
+		//中央角判定
+		else if (OnePlayGame::CUSHION_POSITION[2][3].x < ball->getX() && OnePlayGame::CUSHION_POSITION[3][3].x > ball->getX()){
+			if (wallCollisionCheck(ball, OnePlayGame::CUSHION_POSITION[2][2], OnePlayGame::CUSHION_POSITION[2][3]))
+				return;
+			if (wallCollisionCheck(ball, OnePlayGame::CUSHION_POSITION[3][2], OnePlayGame::CUSHION_POSITION[3][3]))
+				return;
+		}
+		//右角判定
+		else if (OnePlayGame::CUSHION_POSITION[3][1].x < ball->getX()){
+			if (wallCollisionCheck(ball, OnePlayGame::CUSHION_POSITION[3][0], OnePlayGame::CUSHION_POSITION[3][1]))
+				return;
+		}
+		else{
+			ball->setV( Vector2d(ball->getV().x, ball->getV().y * -1) );
+			ball->setY(OnePlayGame::CUSHION_TOP + ball->getSize());
+		}
+	}
+
+	//下クッション判定
+	else if (OnePlayGame::CUSHION_BOTTOM < (check.y + ball->getSize())){
+		//左角判定
+		if (OnePlayGame::CUSHION_POSITION[4][1].x > ball->getX()){
+			if (wallCollisionCheck(ball, OnePlayGame::CUSHION_POSITION[4][0], OnePlayGame::CUSHION_POSITION[4][1]))
+				return;
+		}
+		//中央角判定
+		else if (OnePlayGame::CUSHION_POSITION[4][3].x < ball->getX() && OnePlayGame::CUSHION_POSITION[5][3].x > ball->getX()){
+			if (wallCollisionCheck(ball, OnePlayGame::CUSHION_POSITION[4][2], OnePlayGame::CUSHION_POSITION[4][3]))
+				return;
+			if (wallCollisionCheck(ball, OnePlayGame::CUSHION_POSITION[5][2], OnePlayGame::CUSHION_POSITION[5][3]))
+				return;
+		}
+		//右角判定
+		else if (OnePlayGame::CUSHION_POSITION[5][1].x < ball->getX()){
+			if (wallCollisionCheck(ball, OnePlayGame::CUSHION_POSITION[5][0], OnePlayGame::CUSHION_POSITION[5][1]))
+				return;
+		}
+		else{
+			ball->setV(Vector2d(ball->getV().x, ball->getV().y * -1));
+			ball->setY(OnePlayGame::CUSHION_BOTTOM - ball->getSize());
+		}
+	}
+
+	//左クッション判定
+	if (OnePlayGame::CUSHION_LEFT > (check.x - ball->getSize())){
+		//上角判定
+		if (OnePlayGame::CUSHION_POSITION[0][1].y > ball->getY()){
+			if (wallCollisionCheck(ball, OnePlayGame::CUSHION_POSITION[0][0], OnePlayGame::CUSHION_POSITION[0][1]))
+				return;
+		}
+		//下角判定
+		else if (OnePlayGame::CUSHION_POSITION[0][3].y < ball->getY()){
+			if (wallCollisionCheck(ball, OnePlayGame::CUSHION_POSITION[0][2], OnePlayGame::CUSHION_POSITION[0][3]))
+				return;
+		}
+		else{
+			ball->setV(Vector2d(ball->getV().x * -1, ball->getV().y));
+			ball->setX(OnePlayGame::CUSHION_LEFT + ball->getSize());
+		}
+	}
+
+	//右クッション判定
+	else if (OnePlayGame::CUSHION_RIGHT < (check.x + ball->getSize())){
+		//上角判定
+		if (OnePlayGame::CUSHION_POSITION[1][1].y > ball->getY()){
+			if (wallCollisionCheck(ball, OnePlayGame::CUSHION_POSITION[1][0], OnePlayGame::CUSHION_POSITION[1][1]))
+				return;
+		}
+		//下角判定
+		else if (OnePlayGame::CUSHION_POSITION[1][3].y < ball->getY()){
+			if (wallCollisionCheck(ball, OnePlayGame::CUSHION_POSITION[1][2], OnePlayGame::CUSHION_POSITION[1][3]))
+				return;
+		}
+		else{
+			ball->setV(Vector2d(ball->getV().x * -1, ball->getV().y));
+			ball->setX(OnePlayGame::CUSHION_RIGHT - ball->getSize());
+		}
+	}
+}
+
 //ボールの移動処理を行う。
 void OnePlayGame::BallsMove(){
 	Vector2d sigmentIJ, iV, jV;
@@ -176,6 +274,8 @@ void OnePlayGame::BallsMove(){
 	for (unsigned int i = 0; i < mBalls.size(); i++){
 		iBall = mBalls[i];
 		iBall->move();
+
+		CushionCollision(iBall);
 
 		//ポケットにボールが入ったかチェック
 		if (PocketInCheck(mBalls[i]) == true){

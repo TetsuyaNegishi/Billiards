@@ -81,117 +81,13 @@ bool Ball::movingCheck(){
 		return true;
 }
 
-bool wallCollisionCheck(Ball* ball, Vector2d wallPosition1, Vector2d wallPosition2){
-	Vector2d wallVector, t, v;
-	float crossProduct;
-	t = ball->getT();
-	v = ball->getV();
-	wallVector = (wallPosition1 - wallPosition2).getNormalizeVector();
-	crossProduct = Cross(wallVector, t + v - wallPosition1);//t+víçà”
-	if (fabs(crossProduct) < ball->getSize()){
-		(*ball).setV(v - 2 * (NormalVectorLeft(wallVector)*v) * NormalVectorLeft(wallVector));
-		return true;
-	}
-	return false;
-}
-
 void Ball::move(){
-	Vector2d check = t + v;
-	Vector2d wallPosition[2],wallVector;
-	
-	//è„ÉNÉbÉVÉáÉìè’ìÀîªíË
-	if (OnePlayGame::CUSHION_TOP > (check.y - SIZE)){
-		//ç∂äpîªíË
-		if (OnePlayGame::CUSHION_POSITION[2][1].x > getX()){
-			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[2][0], OnePlayGame::CUSHION_POSITION[2][1]))
-				return;
-		}
-		//íÜâõäpîªíË
-		else if (OnePlayGame::CUSHION_POSITION[2][3].x < t.x && OnePlayGame::CUSHION_POSITION[3][3].x > t.x){
-			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[2][2], OnePlayGame::CUSHION_POSITION[2][3]))
-				return;
-			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[3][2], OnePlayGame::CUSHION_POSITION[3][3]))
-				return;			
-		}
-		//âEäpîªíË
-		else if (OnePlayGame::CUSHION_POSITION[3][1].x < getX()){
-			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[3][0], OnePlayGame::CUSHION_POSITION[3][1]))
-				return;
-		}
-		else{ 
-			v.y *= -1; 
-			t.y = OnePlayGame::CUSHION_TOP + SIZE;
-		}
-	}
-
-	//â∫ÉNÉbÉVÉáÉìîªíË
-	else if (OnePlayGame::CUSHION_BOTTOM < (check.y + SIZE)){
-		//ç∂äpîªíË
-		if (OnePlayGame::CUSHION_POSITION[4][1].x > getX()){
-			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[4][0], OnePlayGame::CUSHION_POSITION[4][1]))
-				return;
-		}
-		//íÜâõäpîªíË
-		else if (OnePlayGame::CUSHION_POSITION[4][3].x < t.x && OnePlayGame::CUSHION_POSITION[5][3].x > t.x){
-			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[4][2], OnePlayGame::CUSHION_POSITION[4][3]))
-				return;
-			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[5][2], OnePlayGame::CUSHION_POSITION[5][3]))
-				return;
-		}
-		//âEäpîªíË
-		else if (OnePlayGame::CUSHION_POSITION[5][1].x < getX()){
-			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[5][0], OnePlayGame::CUSHION_POSITION[5][1]))
-				return;
-		}
-		else{ 
-			v.y *= -1;
-			t.y = OnePlayGame::CUSHION_BOTTOM - SIZE;
-		}
-	}
-
-	//ç∂ÉNÉbÉVÉáÉìîªíË
-	if (OnePlayGame::CUSHION_LEFT > (check.x - SIZE)){
-		//è„äpîªíË
-		if (OnePlayGame::CUSHION_POSITION[0][1].y > getY()){
-			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[0][0], OnePlayGame::CUSHION_POSITION[0][1]))
-				return;
-		}
-		//â∫äpîªíË
-		else if (OnePlayGame::CUSHION_POSITION[0][3].y < getY()){
-			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[0][2], OnePlayGame::CUSHION_POSITION[0][3]))
-				return;
-		}
-		else{ 
-			v.x *= -1;
-			t.x = OnePlayGame::CUSHION_LEFT + SIZE;
-		}
-	}
-
-	//âEÉNÉbÉVÉáÉìîªíË
-	else if (OnePlayGame::CUSHION_RIGHT < (check.x + SIZE)){
-		//è„äpîªíË
-		if (OnePlayGame::CUSHION_POSITION[1][1].y > getY()){
-			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[1][0], OnePlayGame::CUSHION_POSITION[1][1]))
-				return;
-		}
-		//â∫äpîªíË
-		else if (OnePlayGame::CUSHION_POSITION[1][3].y < getY()){
-			if (wallCollisionCheck(this, OnePlayGame::CUSHION_POSITION[1][2], OnePlayGame::CUSHION_POSITION[1][3]))
-				return;
-		}
-		else{ 
-			v.x *= -1;
-			t.x = OnePlayGame::CUSHION_RIGHT - SIZE;
-		}
-	}
-
 	t += v;
 
 	if ((FRICTON_FORCE_SIZE*v).norm() < 0.2)
 		v = Vector2d(0, 0);
 	else
 		v = FRICTON_FORCE_SIZE*v;
-
 }
 
 void Ball::display(){

@@ -11,7 +11,6 @@ private:
 	Player* mPlayer;
 	bool mPlayerExist;
 
-	int mStartTime;
 	int mNumShot;
 	int mNumColorBall;
 
@@ -19,10 +18,11 @@ private:
 	std::vector<Ball*> mBalls;
 	void BoardShow();
 	void BallShow();
-	void TimeShow();
 	void NumShotShow();
 	void DrawSquare(const Vector2d position[4], int color);
 	bool PocketInCheck(Ball* ball);
+	bool wallCollisionCheck(Ball* ball, Vector2d wallPosition1, Vector2d wallPosition2);
+	void CushionCollision(Ball* ball);
 
 
 public:
@@ -59,11 +59,6 @@ public:
 	void PutPlayer();
 	void NumShotPlaPla();
 	Player* GetPlayer();
-
-	//void init();
-	//void main();
-	//void end();
-	
 
 	//シーケンス処理用
 private:
