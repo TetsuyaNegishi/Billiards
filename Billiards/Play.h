@@ -8,6 +8,8 @@ private:
 	bool mPrevMouseInput;
 	void PutPlayer();
 	void ShotPlayer();
+	float mPowerUp;
+	void CueShow(Vector2d playerT, Vector2d direction);
 
 public:
 	Play(OnePlayGame* parent);

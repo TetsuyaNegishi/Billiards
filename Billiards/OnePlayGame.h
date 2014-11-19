@@ -14,11 +14,14 @@ private:
 	int mNumShot;
 	int mNumColorBall;
 
+	float mShotPower;
+
 	std::vector<Pocket*> mPockets;
 	std::vector<Ball*> mBalls;
 	void BoardShow();
 	void BallShow();
 	void NumShotShow();
+	void ShotPowerShow();
 	void DrawSquare(const Vector2d position[4], int color);
 	bool PocketInCheck(Ball* ball);
 	bool wallCollisionCheck(Ball* ball, Vector2d wallPosition1, Vector2d wallPosition2);
@@ -59,6 +62,9 @@ public:
 	void PutPlayer();
 	void NumShotPlaPla();
 	Player* GetPlayer();
+	int GetNumColorBall();
+	void SetShotPower(float power);
+	float GetShotPower();
 
 	//シーケンス処理用
 private:

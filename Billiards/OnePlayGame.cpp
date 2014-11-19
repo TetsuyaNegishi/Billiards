@@ -86,6 +86,9 @@ OnePlayGame::OnePlayGame(){
 	mBalls.push_back(mPlayer);
 	mPlayerExist = true;
 
+	//ショットパワー初期化
+	mShotPower = 0.0f;
+
 	//フォント設定
 	SetFontSize(40);
 }
@@ -134,11 +137,16 @@ void OnePlayGame::NumShotShow(){
 	DrawFormatString(20, BOARD_BOTTOM + 10, GetColor(255, 255, 255), "打数：%d", mNumShot);
 }
 
+void OnePlayGame::ShotPowerShow(){
+	DrawFormatString(MainLoop::WINDOW_WIDTH/2, BOARD_BOTTOM + 10, GetColor(255, 255, 255), "力：%d", (int)mShotPower);
+}
+
 //ボール・タイム・打数の描画
 void OnePlayGame::Display(){
 	BoardShow();
 	BallShow();
 	NumShotShow();
+	ShotPowerShow();
 }
 
 //ボールが一つでも動いていればtrue,すべて動いていなければfalseを返す
@@ -162,18 +170,20 @@ bool OnePlayGame::PocketInCheck(Ball* ball){
 
 //wallPositionを結んだ線上にballがあれば反発処理をし、trueを返す
 bool OnePlayGame::wallCollisionCheck(Ball* ball, Vector2d wallPosition1, Vector2d wallPosition2){
-	Vector2d wallVector, t, v;
-	float crossProduct;
-	t = ball->getT();
-	v = ball->getV();
+	Vector2d wallVector;
+	float crossProduct, sin;
 	wallVector = (wallPosition1 - wallPosition2).getNormalizeVector();
-	crossProduct = Cross(wallVector, t + v - wallPosition1);//t+v注意
+	crossProduct = Cross(wallVector, ball->getT() - wallPosition1);
 	if (fabs(crossProduct) < ball->getSize()){
-		(*ball).setV(v - 2 * (NormalVectorLeft(wallVector)*v) * NormalVectorLeft(wallVector));
+		//sin = Cross(ball->getV(), wallVector) / ( ball->getV().norm()*wallVector.norm());
+		//ball->setT(ball->getT() - (crossProduct / sin + ball->getSize()) * ball->getV().getNormalizeVector());
+		//ball->setT(ball->getT() + crossProduct * NormalVectorLeft(wallVector));
+		ball->setV(ball->getV() - 2 * (NormalVectorLeft(wallVector)*ball->getV()) * NormalVectorLeft(wallVector));
 		return true;
 	}
 	return false;
 }
+
 
 //クッションとの衝突処理
 void OnePlayGame::CushionCollision(Ball* ball){
@@ -344,6 +354,18 @@ void OnePlayGame::NumShotPlaPla(){
 
 Player* OnePlayGame::GetPlayer(){
 	return mPlayer;
+}
+
+int OnePlayGame::GetNumColorBall(){
+	return mNumColorBall;
+}
+
+void OnePlayGame::SetShotPower(float power){
+	mShotPower = power;
+}
+
+float OnePlayGame::GetShotPower(){
+	return mShotPower;
 }
 
 Scene* OnePlayGame::Update(){

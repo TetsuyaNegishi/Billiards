@@ -4,7 +4,7 @@
 #include<DxLib.h>
 
 const int Ball::SIZE = 15;
-const float Ball::FRICTON_FORCE_SIZE = 0.99f;
+const float Ball::FRICTON_FORCE_SIZE = 0.993f;
 
 Ball::Ball(){
 	v = Vector2d(0, 0);
