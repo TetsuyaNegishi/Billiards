@@ -53,6 +53,8 @@ public:
 	static const int CUSHION_BOTTOM;
 	static const Vector2d CUSHION_POSITION[][4];
 
+	static const float MAX_POWER;
+
 	void Display();
 	
 	bool BallsMovingCheck();

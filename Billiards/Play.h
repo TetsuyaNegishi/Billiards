@@ -14,4 +14,5 @@ private:
 public:
 	Play(OnePlayGame* parent);
 	virtual Scene* Update() override;
+	
 };

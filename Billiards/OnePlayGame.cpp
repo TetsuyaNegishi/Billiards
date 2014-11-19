@@ -51,6 +51,9 @@ const Vector2d OnePlayGame::CUSHION_POSITION[][4] = {
 		Vector2d(WINDOW_WIDTH / 2 + CUSHION_SIZE - 10, (float)FIELD_BOTTOM), Vector2d(WINDOW_WIDTH / 2 + CUSHION_SIZE - 10 + CUSHION_EDGE, (float)CUSHION_BOTTOM) }
 };
 
+//shotPowerの最大値設定
+const float OnePlayGame::MAX_POWER = 13;
+
 OnePlayGame::OnePlayGame(){
 	//シーケンス処理
 	mChild = new Play(this);
@@ -91,6 +94,8 @@ OnePlayGame::OnePlayGame(){
 
 	//フォント設定
 	SetFontSize(40);
+	ChangeFont("メイリオ");
+	SetFontThickness(3);
 }
 
 //任意の四角形を描画
@@ -137,8 +142,21 @@ void OnePlayGame::NumShotShow(){
 	DrawFormatString(20, BOARD_BOTTOM + 10, GetColor(255, 255, 255), "打数：%d", mNumShot);
 }
 
+//Powerゲージの描画
 void OnePlayGame::ShotPowerShow(){
-	DrawFormatString(MainLoop::WINDOW_WIDTH/2, BOARD_BOTTOM + 10, GetColor(255, 255, 255), "力：%d", (int)mShotPower);
+	int width = GetDrawStringWidth("Power", strlen("Power")) + 10;
+	int powerShowLeft = MainLoop::WINDOW_WIDTH / 2 - 100;
+	int gaugeLeft = powerShowLeft + width;
+	int gaugeRight = gaugeLeft + mShotPower / MAX_POWER * (BOARD_RIGHT - gaugeLeft);
+
+	DrawFormatString(powerShowLeft, BOARD_BOTTOM + 10, GetColor(255, 255, 255), "Power");
+
+	DrawQuadrangle(gaugeLeft, BOARD_BOTTOM + 10, gaugeLeft, MainLoop::WINDOW_HEIGHT - 10,
+		BOARD_RIGHT, MainLoop::WINDOW_HEIGHT - 10, BOARD_RIGHT, BOARD_BOTTOM + 10, GetColor(255, 255, 255), TRUE);
+	DrawQuadrangle(gaugeLeft, BOARD_BOTTOM + 10, gaugeLeft, MainLoop::WINDOW_HEIGHT - 10,
+		gaugeRight, MainLoop::WINDOW_HEIGHT - 10, gaugeRight, BOARD_BOTTOM + 10, GetColor(0, 0, 255), TRUE);
+	DrawQuadrangle(gaugeLeft, BOARD_BOTTOM + 10, gaugeLeft, MainLoop::WINDOW_HEIGHT - 10,
+		BOARD_RIGHT, MainLoop::WINDOW_HEIGHT - 10, BOARD_RIGHT, BOARD_BOTTOM + 10, GetColor(0, 0, 0), FALSE);
 }
 
 //ボール・タイム・打数の描画
