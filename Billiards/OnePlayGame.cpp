@@ -386,6 +386,10 @@ float OnePlayGame::GetShotPower(){
 	return mShotPower;
 }
 
+int OnePlayGame::GetNumShot(){
+	return mNumShot;
+}
+
 Scene* OnePlayGame::Update(){
 	Display();
 

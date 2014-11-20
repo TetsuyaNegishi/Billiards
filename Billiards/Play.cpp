@@ -26,13 +26,7 @@ void Play::PutPlayer(){
 	mParent->PlayerSet(x, y);
 }
 
-//”CˆÓ‚ÌŽlŠpŒ`‚ð•`‰æ
-void DrawSquare(const Vector2d position[4], int color){
-	DrawTriangle(position[0].x, position[0].y, position[1].x, position[1].y, position[2].x, position[2].y, color, TRUE);
-	DrawTriangle(position[1].x, position[1].y, position[2].x, position[2].y, position[3].x, position[3].y, color, TRUE);
-}
-
-
+//–_‚Ì•`‰æ
 void Play::CueShow(Vector2d playerT, Vector2d direction){
 	Vector2d tip;
 	int cueWidth = 5;

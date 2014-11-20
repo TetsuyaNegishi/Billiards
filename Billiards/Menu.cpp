@@ -2,30 +2,33 @@
 #include<DxLib.h>
 #include"Play.h"
 #include"Title.h"
+#include"OnePlayGame.h"
 #include"MainLoop.h"
 
-Menu::Menu(OnePlayGame* parent){
+Menu::Menu(OnePlayGame* parent) : mFontHandle(CreateFontToHandle("メイリオ", 30, 1)){
 	mParent = parent;
 }
 
 Scene* Menu::Update(){
-	const int WIDTH = 100;
-	const int HEIGHT = 100;
-
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-	DrawBox(MainLoop::WINDOW_WIDTH / 2 - WIDTH, MainLoop::WINDOW_HEIGHT / 2 - HEIGHT, 
-		MainLoop::WINDOW_WIDTH / 2 + WIDTH, MainLoop::WINDOW_HEIGHT / 2 + HEIGHT, GetColor(0, 0, 0), TRUE);
+	DrawBox(0, 0, MainLoop::WINDOW_WIDTH, MainLoop::WINDOW_HEIGHT, GetColor(0, 0, 0), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	
+	int menuLeft = MainLoop::WINDOW_WIDTH / 2 - GetDrawStringWidth("[X-KEY]:START", strlen("[X-KEY]:START")) / 2;
 
-	DrawFormatString(10, 10, GetColor(255, 255, 255), "Menu");
-
+	DrawFormatStringToHandle(menuLeft, MainLoop::WINDOW_HEIGHT / 2 - 50, GetColor(255, 255, 255), mFontHandle, "[Z-KEY]:RESUME");
+	DrawFormatStringToHandle(menuLeft, MainLoop::WINDOW_HEIGHT / 2, GetColor(255, 255, 255), mFontHandle, "[X-KEY]:RESTART");
+	DrawFormatStringToHandle(menuLeft, MainLoop::WINDOW_HEIGHT / 2 + 50, GetColor(255, 255, 255), mFontHandle, "[C-KEY]:TITLE");
 
 	//シーケンス処理
 	Scene* next = this;
-	if (CheckHitKey(KEY_INPUT_LEFT) != 0){
+	if (CheckHitKey(KEY_INPUT_Z) != 0){
 		next = new Play(mParent);
 	}
-	if (CheckHitKey(KEY_INPUT_SPACE) != 0){
+	else if (CheckHitKey(KEY_INPUT_X) != 0){
+		next = new OnePlayGame();
+	}
+	else if (CheckHitKey(KEY_INPUT_C) != 0){
 		next = new Title();
 	}
 	return next;

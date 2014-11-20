@@ -67,6 +67,7 @@ public:
 	int GetNumColorBall();
 	void SetShotPower(float power);
 	float GetShotPower();
+	int GetNumShot();
 
 	//シーケンス処理用
 private:

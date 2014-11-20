@@ -4,7 +4,7 @@
 
 class Title : public SceneMainLoopChild{
 private:
-	const int handle;
+	//const int handle;
 
 public:
 	Title();
