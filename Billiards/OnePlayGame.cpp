@@ -139,7 +139,12 @@ void OnePlayGame::BallShow(){
 
 //打数の描画
 void OnePlayGame::NumShotShow(){
-	DrawFormatString(20, BOARD_BOTTOM + 10, GetColor(255, 255, 255), "打数：%d", mNumShot);
+	int numShotLeft = 20;
+	DrawFormatString(numShotLeft, BOARD_BOTTOM + 10, GetColor(255, 255, 255), "打数：%d", mNumShot);
+	if (!mPlayerExist){
+		int Left = numShotLeft + GetDrawStringWidth("打数：00", strlen("打数：00"));
+		DrawFormatString(Left, BOARD_BOTTOM + 10, GetColor(255, 0, 0), "+3");
+	}
 }
 
 //Powerゲージの描画
@@ -159,7 +164,7 @@ void OnePlayGame::ShotPowerShow(){
 		BOARD_RIGHT, MainLoop::WINDOW_HEIGHT - 10, BOARD_RIGHT, BOARD_BOTTOM + 10, GetColor(0, 0, 0), FALSE);
 }
 
-//ボール・タイム・打数の描画
+//ビリヤード盤・ボール・打数・Powerの描画
 void OnePlayGame::Display(){
 	BoardShow();
 	BallShow();
@@ -310,10 +315,8 @@ void OnePlayGame::BallsMove(){
 		if (PocketInCheck(mBalls[i]) == true){
 			//白ボールがポケットに入ったかチェック
 			//白ボールがポケットに入ったらnumShotを＋３
-			if (iBall == mPlayer){
+			if (iBall == mPlayer)
 				mPlayerExist = false;
-				mNumShot = mNumShot + 3;
-			}
 			else
 				mNumColorBall--;
 			mBalls.erase(mBalls.begin() + i);
@@ -364,6 +367,7 @@ void OnePlayGame::PutPlayer(){
 		}
 		mBalls.push_back(mPlayer);
 		mPlayerExist = true;
+		mNumShot = mNumShot + 3;
 	}
 }
 
