@@ -27,6 +27,8 @@ private:
 	bool wallCollisionCheck(Ball* ball, Vector2d wallPosition1, Vector2d wallPosition2);
 	void CushionCollision(Ball* ball);
 
+	const int mBallSE;
+	const int mPocketSE;
 
 public:
 	//ウィンドウサイズ指定

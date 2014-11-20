@@ -11,6 +11,8 @@ private:
 	float mPowerUp;
 	void CueShow(Vector2d playerT, Vector2d direction);
 
+	const int mCueSE;
+
 public:
 	Play(OnePlayGame* parent);
 	virtual Scene* Update() override;

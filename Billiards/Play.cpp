@@ -3,7 +3,7 @@
 #include"Menu.h"
 #include"Clear.h"
 
-Play::Play(OnePlayGame* parent){
+Play::Play(OnePlayGame* parent) : mCueSE(LoadSoundMem("SE/cue.mp3")){
 	mParent = parent;
 	mPrevMouseInput = false;
 	mPowerUp = 0.2f;
@@ -29,8 +29,8 @@ void Play::PutPlayer(){
 //棒の描画
 void Play::CueShow(Vector2d playerT, Vector2d direction){
 	Vector2d tip;
-	int cueWidth = 5;
-	int cueHeight = 300;
+	float cueWidth = 5;
+	float cueHeight = 300;
 	tip = playerT - (mParent->GetShotPower()*3+30)*direction;
 	Vector2d positionA[2] = { tip + cueWidth*NormalVectorLeft(direction), tip - cueWidth*NormalVectorLeft(direction) };
 	Vector2d positionB[2] = { positionA[0] - cueHeight*direction, positionA[1] - cueHeight*direction };
@@ -43,7 +43,6 @@ void Play::CueShow(Vector2d playerT, Vector2d direction){
 //白ボールを打つメソッド
 void Play::ShotPlayer(){
 	int x, y;
-	float speedSize;
 	float shotPower = mParent->GetShotPower();
 
 	GetMousePoint(&x, &y);
@@ -68,6 +67,7 @@ void Play::ShotPlayer(){
 			mPrevMouseInput = false;
 			mParent->GetPlayer()->setV(shotPower * direction);
 			mParent->NumShotPlaPla();
+			PlaySoundMem(mCueSE, DX_PLAYTYPE_BACK);
 		}
 		else
 			mParent->SetShotPower(0);

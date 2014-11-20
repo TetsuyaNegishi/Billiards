@@ -54,7 +54,7 @@ const Vector2d OnePlayGame::CUSHION_POSITION[][4] = {
 //shotPowerの最大値設定
 const float OnePlayGame::MAX_POWER = 13;
 
-OnePlayGame::OnePlayGame(){
+OnePlayGame::OnePlayGame() : mBallSE(LoadSoundMem("SE/ball.mp3")), mPocketSE(LoadSoundMem("SE/pocket.mp3")){
 	//シーケンス処理
 	mChild = new Play(this);
 
@@ -180,6 +180,7 @@ bool OnePlayGame::BallsMovingCheck(){
 bool OnePlayGame::PocketInCheck(Ball* ball){
 	for (std::vector<Pocket*>::iterator pocket = mPockets.begin(); pocket != mPockets.end(); pocket++){
 		if (((*ball).getT() - (*pocket)->getT()).norm2() < pow((*pocket)->getSize(), 2)){
+			PlaySoundMem(mPocketSE, DX_PLAYTYPE_BACK);
 			return true;
 		}
 	}
@@ -332,6 +333,7 @@ void OnePlayGame::BallsMove(){
 				jV = dotJ * sigmentIJ + jBall->getV();
 				iBall->setV(iV);
 				jBall->setV(jV);
+				PlaySoundMem(mBallSE, DX_PLAYTYPE_BACK);
 			}
 		}
 	}
